@@ -15,3 +15,5 @@ helmCharts:
     valuesFile: values.yaml
     additionalValuesFiles:
       - prod/values.yaml
+patches:
+  - path: configmap-patch.yaml
