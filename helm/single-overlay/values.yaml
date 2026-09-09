@@ -1,0 +1,3 @@
+# Shared by every overlay. Listed first, so the overlay wins on conflicts.
+message: "from the shared parent"
+layer: parent

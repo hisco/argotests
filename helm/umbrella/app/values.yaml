@@ -1,0 +1,4 @@
+message: "umbrella parent"
+sub:
+  message: "from the vendored subchart"
+  layer: sub

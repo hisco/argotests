@@ -1,0 +1,9 @@
+apiVersion: v2
+name: umbrella
+description: Wrapper chart whose objects come from a vendored subchart.
+type: application
+version: 1.0.0
+dependencies:
+  - name: sub
+    version: 1.0.0
+    repository: file://charts/sub

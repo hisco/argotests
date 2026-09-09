@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: helm-no-values
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests
+    targetRevision: HEAD
+    path: helm/no-values/app
+    helm:
+      releaseName: novalues
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: probe-novalues
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-{{ .Chart.Name }}
+data:
+  # Release.Namespace catches a conversion that forgets to pass the namespace:
+  # helm renders "default" when it is not told.
+  releaseNamespace: {{ .Release.Namespace }}
+  releaseName: {{ .Release.Name }}
+  # Whichever values file won, and in what order they merged.
+  message: {{ .Values.message | quote }}
+  layer: {{ .Values.layer | default "unset" | quote }}

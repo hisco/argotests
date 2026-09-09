@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: helm-multi-overlay
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - overlay: prod
+          - overlay: staging
+  template:
+    metadata:
+      name: helm-multi-{{ .overlay }}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests
+        targetRevision: HEAD
+        path: helm/multi-overlay/{{ .overlay }}
+        helm:
+          releaseName: multi-{{ .overlay }}
+          valueFiles:
+            - ../values.yaml
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: probe-multi-{{ .overlay }}
+      syncPolicy:
+        automated: {prune: true, selfHeal: true}
+        syncOptions: [CreateNamespace=true]

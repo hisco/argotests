@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: helm-umbrella
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests
+    targetRevision: HEAD
+    path: helm/umbrella/app
+    helm:
+      releaseName: umbrella
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: probe-umbrella
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]
