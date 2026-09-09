@@ -1,0 +1,8 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: manifests-recurse, namespace: argocd}
+spec:
+  project: default
+  source: {repoURL: https://github.com/hisco/argotests, targetRevision: HEAD, path: manifests/tree, directory: {recurse: true}}
+  destination: {server: https://kubernetes.default.svc, namespace: probe-manifests}
+  syncPolicy: {automated: {prune: true, selfHeal: true}, syncOptions: [CreateNamespace=true]}

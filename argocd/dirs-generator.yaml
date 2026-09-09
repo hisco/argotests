@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata: {name: dirs-generator, namespace: argocd}
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://github.com/hisco/argotests
+        revision: HEAD
+        directories: [{path: helm/multi-overlay/*}]
+  template:
+    metadata: {name: 'dirs-{{ .path.basename }}'}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests
+        targetRevision: HEAD
+        path: '{{ .path.path }}'
+        helm:
+          releaseName: 'dirs-{{ .path.basename }}'
+          valueFiles: [values.yaml]
+      destination: {server: https://kubernetes.default.svc, namespace: 'probe-dirs-{{ .path.basename }}'}
+      syncPolicy: {automated: {prune: true, selfHeal: true}, syncOptions: [CreateNamespace=true]}

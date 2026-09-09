@@ -1,0 +1,4 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: tree-one}
+data: {message: a plain manifest}
