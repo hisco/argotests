@@ -20,12 +20,7 @@ spec:
       source:
         repoURL: https://github.com/hisco/argotests
         targetRevision: HEAD
-        path: helm/appset-inline/{{ .overlay }}
-        helm:
-          releaseName: inline
-          valueFiles:
-            - ../values.yaml
-            - values.yaml
+        path: helm/appset-inline
       destination:
         server: https://kubernetes.default.svc
         namespace: probe-inline-appset
