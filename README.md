@@ -49,3 +49,17 @@ like a bad conversion rather than a missing cluster setting.
 a conversion can be checked against what the application produced before it.
 Explicit nulls and Argo's own tracking labels are normalised away; reading zero
 objects is an error rather than a match.
+
+## The multi-overlay trap
+
+One ApplicationSet stamps every overlay from a single template, so moving its
+`path` moves all of them at once. Converting one overlay and leaving the rest
+points each of the others at a directory nobody created, and Argo answers:
+
+```
+Failed to load target state: ... app path does not exist
+```
+
+That is not hypothetical — it is what `helm/multi-inline` did on this cluster
+when only its `prod` overlay was converted. The shape is here so that a tool
+converting one application has to notice the others.
