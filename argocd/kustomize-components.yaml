@@ -1,0 +1,8 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: kustomize-components, namespace: argocd}
+spec:
+  project: default
+  source: {repoURL: https://github.com/hisco/argotests, targetRevision: HEAD, path: kustomize/components/base}
+  destination: {server: https://kubernetes.default.svc, namespace: probe-kcomp}
+  syncPolicy: {automated: {prune: true, selfHeal: true}, syncOptions: [CreateNamespace=true]}
