@@ -18,7 +18,12 @@ spec:
       source:
         repoURL: https://github.com/hisco/argotests
         targetRevision: HEAD
-        path: helm/multi-inline/{{ .overlay }}-kustomize
+        path: helm/multi-inline/{{ .overlay }}
+        helm:
+          releaseName: multi-inline-{{ .overlay }}
+          valueFiles:
+            - ../values.yaml
+            - values.yaml
       destination:
         server: https://kubernetes.default.svc
         namespace: probe-multi-inline-{{ .overlay }}
