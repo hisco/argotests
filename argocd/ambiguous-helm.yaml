@@ -1,0 +1,12 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: ambiguous-helm, namespace: argocd}
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests
+    targetRevision: HEAD
+    path: ambiguous/both
+    helm: {}
+  destination: {server: https://kubernetes.default.svc, namespace: probe-ambiguous-helm}
+  syncPolicy: {automated: {prune: true, selfHeal: true}, syncOptions: [CreateNamespace=true]}

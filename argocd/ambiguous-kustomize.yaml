@@ -1,0 +1,12 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: ambiguous-kustomize, namespace: argocd}
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests
+    targetRevision: HEAD
+    path: ambiguous/both
+    kustomize: {}
+  destination: {server: https://kubernetes.default.svc, namespace: probe-ambiguous-kustomize}
+  syncPolicy: {automated: {prune: true, selfHeal: true}, syncOptions: [CreateNamespace=true]}
