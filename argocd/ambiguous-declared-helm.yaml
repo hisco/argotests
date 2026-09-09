@@ -1,0 +1,17 @@
+# An empty "helm: {}" is dropped by Argo, so declaring a tool means saying
+# something in it. This one really does declare Helm for a directory that also
+# holds a kustomization.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: {name: ambiguous-declared-helm, namespace: argocd}
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests
+    targetRevision: HEAD
+    path: ambiguous/both
+    helm:
+      releaseName: declared
+      valueFiles: [values.yaml]
+  destination: {server: https://kubernetes.default.svc, namespace: probe-declared-helm}
+  syncPolicy: {automated: {prune: true, selfHeal: true}, syncOptions: [CreateNamespace=true]}
