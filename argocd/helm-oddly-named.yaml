@@ -1,0 +1,33 @@
+# Named nothing like "appset". A tool that finds these by filename finds every
+# one in a repository that follows that convention, and none here.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: helm-oddly-named
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - overlay: prod
+  template:
+    metadata:
+      name: helm-oddly-named-{{ .overlay }}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests
+        targetRevision: HEAD
+        path: helm/oddly-named/{{ .overlay }}
+        helm:
+          releaseName: oddly
+          valueFiles:
+            - ../values.yaml
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: probe-oddly
+      syncPolicy:
+        automated: {prune: true, selfHeal: true}
+        syncOptions: [CreateNamespace=true]
