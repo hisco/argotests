@@ -63,3 +63,25 @@ Failed to load target state: ... app path does not exist
 That is not hypothetical — it is what `helm/multi-inline` did on this cluster
 when only its `prod` overlay was converted. The shape is here so that a tool
 converting one application has to notice the others.
+
+## What overfitting looks like
+
+Three assumptions were caught by shapes in this repository that the repository
+they were written against does not contain:
+
+**Finding a file by its name.** ApplicationSets were located by matching
+`*appset*`. Every one in the source repository is called that; none here has to
+be. `helm/oddly-named/prod/generator.yaml` is the counter-example.
+
+**Reading a directory instead of the application.** Which tool renders a
+directory is not a property of the directory. `ambiguous/both` holds a
+`Chart.yaml` and a `kustomization.yaml`; Argo resolves it to Kustomize unless the
+Application says otherwise, and an empty `helm: {}` is dropped so saying so means
+putting something in it. `ambiguous-declared-helm` does.
+
+**Deciding by listing order.** With both files present, returning on the first
+match made the answer depend on which name sorted first.
+
+The cost of getting these wrong is not a crash. It is offering somebody a values
+file for an application that renders with kustomize, where editing it merges and
+changes nothing.
