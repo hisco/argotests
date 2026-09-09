@@ -32,3 +32,20 @@ passing unnoticed.
 `argocd/` holds one Application per shape, plus one ApplicationSet. Apply the
 directory to a cluster running Argo CD; every application points back at this
 repository, which is public, so nothing needs credentials.
+
+## Running it
+
+```
+hack/up.sh                      # kind cluster + Argo CD + these applications
+kubectl -n argocd get applications
+```
+
+Argo is configured with `kustomize.buildOptions: --enable-helm --load-restrictor
+LoadRestrictionsNone`. Both are needed by a kustomization that inflates a chart,
+and without them a converted application simply fails to render — which looks
+like a bad conversion rather than a missing cluster setting.
+
+`hack/compare-objects.py` compares two sets of rendered objects by identity, so
+a conversion can be checked against what the application produced before it.
+Explicit nulls and Argo's own tracking labels are normalised away; reading zero
+objects is an error rather than a match.
