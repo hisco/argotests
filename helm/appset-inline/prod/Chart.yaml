@@ -1,0 +1,5 @@
+apiVersion: v2
+name: appset-inline
+description: Minimal chart. Renders one ConfigMap; nothing runs.
+type: application
+version: 1.0.0

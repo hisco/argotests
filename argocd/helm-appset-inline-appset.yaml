@@ -1,0 +1,34 @@
+# Checked in beside the chart it stamps, which is how the file declaring
+# spec.source.helm ends up inside the source an application renders from.
+# Helm ignores it: it is not under templates/.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: helm-appset-inline
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - overlay: prod
+  template:
+    metadata:
+      name: helm-appset-inline-{{ .overlay }}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests
+        targetRevision: HEAD
+        path: helm/appset-inline/{{ .overlay }}
+        helm:
+          releaseName: inline
+          valueFiles:
+            - ../values.yaml
+            - values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: probe-inline-appset
+      syncPolicy:
+        automated: {prune: true, selfHeal: true}
+        syncOptions: [CreateNamespace=true]
