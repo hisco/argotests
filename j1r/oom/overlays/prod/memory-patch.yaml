@@ -10,4 +10,4 @@ spec:
         - name: worker
           resources:
             limits:
-              memory: 16Mi
+              memory: 64Mi
