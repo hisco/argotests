@@ -31,4 +31,4 @@ spec:
             requests:
               memory: 8Mi
             limits:
-              memory: 16Mi # shipper stays small
+              memory: 64Mi # shipper stays small
