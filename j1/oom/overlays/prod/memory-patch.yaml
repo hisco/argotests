@@ -1,0 +1,13 @@
+# prod memory (kept tight on purpose)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checkout
+spec:
+  template:
+    spec:
+      containers:
+        - name: worker
+          resources:
+            limits:
+              memory: 16Mi
