@@ -1,0 +1,8 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+# prod pins the storefront image
+images:
+  - name: nginx
+    newTag: 1.25.3-alpine

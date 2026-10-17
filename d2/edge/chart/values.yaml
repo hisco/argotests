@@ -1,0 +1,2 @@
+# Only the greeting is configurable. The image is written in the template.
+greeting: hello from the edge
