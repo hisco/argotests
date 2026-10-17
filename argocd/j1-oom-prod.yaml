@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: j1-oom-prod
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests
+    targetRevision: main
+    path: j1/oom/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: j1-oom
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]
