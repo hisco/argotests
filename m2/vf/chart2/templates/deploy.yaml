@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: {{ .Release.Name }}-web}
+  template:
+    metadata:
+      labels: {app: {{ .Release.Name }}-web}
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/stefanprodan/podinfo:6.7.1
+          command: ["./podinfo", "--stress-memory=100"]
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
