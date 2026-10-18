@@ -1,0 +1,19 @@
+# Applied once by hand, before the root app. Holds the bootstrap objects.
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: cluster-admin
+  namespace: argocd
+spec:
+  description: Bootstrap objects (AppProjects, ApplicationSets)
+  sourceRepos:
+    - "*"
+  destinations:
+    - namespace: "*"
+      server: "*"
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

@@ -1,0 +1,4 @@
+# kind-e2e overrides for checkout
+resources:
+  limits:
+    memory: 96Mi

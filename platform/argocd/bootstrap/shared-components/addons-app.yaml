@@ -1,0 +1,39 @@
+# For each cluster in cluster-config/, creates "addons-<cluster>". That
+# Application finds every addons/**/<cluster>/*-appset.yaml and deploys it.
+# An addon is on for a cluster when its appset file exists. No flags.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-addons
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  generators:
+    - git:
+        repoURL: https://github.com/hisco/argotests.git
+        revision: main
+        files:
+          - path: platform/argocd/cluster-config/*/config.json
+  template:
+    metadata:
+      name: "addons-{{ .cluster.name }}"
+    spec:
+      project: addons
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: main
+        path: platform/argocd/addons
+        directory:
+          recurse: true
+          include: "**/*/{{ .cluster.name }}/*-appset.yaml"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

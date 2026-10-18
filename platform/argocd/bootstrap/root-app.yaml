@@ -1,0 +1,22 @@
+# App of apps. Apply this once (after cluster-admin-project.yaml) and Argo CD
+# builds everything else from Git.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: platform-root
+  namespace: argocd
+spec:
+  project: cluster-admin
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: platform/argocd/bootstrap/auto-provision-clusters
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

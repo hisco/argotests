@@ -1,0 +1,11 @@
+replicaCount: 1
+image:
+  repository: stefanprodan/podinfo
+  tag: 6.7.1
+# Defaults. Each cluster overrides the memory limit in its own values file.
+resources:
+  requests:
+    cpu: 50m
+    memory: 32Mi
+  limits:
+    memory: 128Mi

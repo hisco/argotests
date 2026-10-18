@@ -1,0 +1,51 @@
+# Joins each environment (environments/*.yaml) to its cluster
+# (cluster-config/*/config.json) and creates "workloads-<env>". That
+# Application picks up every deployment-repo/<app>/argocd/<env>.yaml.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-workloads-environments
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  generators:
+    - merge:
+        mergeKeys:
+          - cluster_name
+        generators:
+          - git:
+              repoURL: https://github.com/hisco/argotests.git
+              revision: main
+              files:
+                - path: platform/environments/*.yaml
+          - git:
+              repoURL: https://github.com/hisco/argotests.git
+              revision: main
+              files:
+                - path: platform/argocd/cluster-config/*/config.json
+  template:
+    metadata:
+      name: "workloads-{{ .env_name }}"
+      labels:
+        cluster: "{{ .cluster.name }}"
+        environment: "{{ .env_name }}"
+    spec:
+      project: "{{ .argoProject }}"
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: "{{ .targetRevision }}"
+        path: platform/deployment-repo
+        directory:
+          recurse: true
+          include: "*/argocd/{{ .env_name }}.yaml"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

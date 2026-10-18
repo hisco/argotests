@@ -1,0 +1,24 @@
+# Deploys the pieces that exist once, not once per cluster: the addons and
+# workloads AppProjects and the two discovery ApplicationSets.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: shared-components
+  namespace: argocd
+spec:
+  project: cluster-admin
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: platform/argocd/bootstrap/shared-components
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

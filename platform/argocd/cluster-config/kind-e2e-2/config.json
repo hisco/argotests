@@ -1,0 +1,9 @@
+{
+  "cluster_name": "kind-e2e-2",
+  "cluster": {
+    "name": "kind-e2e-2",
+    "address": "https://kubernetes.default.svc"
+  },
+  "targetRevision": "main",
+  "argoProject": "kind-e2e-2-cluster"
+}

@@ -1,0 +1,37 @@
+# One Application per folder in cluster-config/. Each one deploys that
+# cluster's AppProject. Add a cluster by adding a folder.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cluster-appprojects
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  generators:
+    - git:
+        repoURL: https://github.com/hisco/argotests.git
+        revision: main
+        files:
+          - path: platform/argocd/cluster-config/*/config.json
+  template:
+    metadata:
+      name: "{{ .cluster.name }}-infra"
+    spec:
+      project: cluster-admin
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: main
+        path: platform/argocd/cluster-config/{{ .cluster.name }}
+        directory:
+          include: appproject.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: argocd
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: worker-e2e-2
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: workloads
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: platform/deployment-repo/worker/chart
+    helm:
+      releaseName: worker
+      valueFiles:
+        - values.yaml
+        - values-kind-e2e-2.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: e2e-2
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,36 @@
+# Deploys the echo-server addon to kind-e2e. Present = enabled.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: echo-server-kind-e2e
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - git:
+        repoURL: https://github.com/hisco/argotests.git
+        revision: main
+        files:
+          - path: platform/argocd/cluster-config/kind-e2e/config.json
+  template:
+    metadata:
+      name: "addon-{{ .cluster.name }}-echo-server"
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: "{{ .argoProject }}"
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: "{{ .targetRevision }}"
+        path: platform/argocd/addons/utilities/echo-server/overlays/kind-e2e
+      destination:
+        server: "{{ .cluster.address }}"
+        namespace: "addons-{{ .cluster.name }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

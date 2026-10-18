@@ -1,0 +1,3 @@
+env_name: e2e
+cluster_name: kind-e2e
+namespace: e2e
