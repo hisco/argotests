@@ -12,6 +12,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: "registry.k8s.io/pause:{{ .Values.image.tag }}"
+          image: ghcr.io/stefanprodan/podinfo:6.7.1
+          command: ["./podinfo", "--stress-memory=200"]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

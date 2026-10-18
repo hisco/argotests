@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: pending-config
 data:
-  LOG_LEVEL: debug
+  LOG_LEVEL: info
