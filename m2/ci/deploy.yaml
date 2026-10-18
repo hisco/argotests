@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ci-web
-  annotations:
-    ci.example/build: "3"
 spec:
   replicas: 1
   selector:
@@ -14,7 +12,8 @@ spec:
     spec:
       containers:
         - name: web
-          image: registry.k8s.io/pause:3.10
+          image: ghcr.io/stefanprodan/podinfo:6.7.1
+          command: ["./podinfo", "--stress-memory=100"]
           resources:
             requests: {memory: 16Mi}
             limits: {memory: 64Mi}
