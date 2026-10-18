@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ci-web
   annotations:
-    ci.example/build: "2"
+    ci.example/build: "3"
 spec:
   replicas: 1
   selector:
