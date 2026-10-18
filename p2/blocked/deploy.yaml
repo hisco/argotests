@@ -1,0 +1,20 @@
+# P2 fixture: podinfo holding 100 MB, OOMKilled at 64Mi; a hand-made quota blocks its next rollout
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blocked-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: blocked-web}
+  template:
+    metadata:
+      labels: {app: blocked-web}
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/stefanprodan/podinfo:6.7.1
+          command: ["./podinfo", "--stress-memory=8"]
+          resources:
+            requests: {memory: 16Mi}
+            limits: {memory: 64Mi}
