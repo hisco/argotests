@@ -17,15 +17,23 @@ argocd/
   bootstrap/
     root-app.yaml                app of apps, applied by hand once
     auto-provision-clusters/     one AppProject app per cluster + shared components
-    shared-components/           addons + workloads discovery ApplicationSets
+    shared-components/           addons + workloads AppProjects and discovery ApplicationSets
   cluster-config/<cluster>/      config.json (cluster facts) + appproject.yaml
   addons/utilities/<addon>/      kustomize: base/ + overlays/<cluster>/
-  addons/addons-project.yaml
-  workloads/workloads-project.yaml
 environments/<env>.yaml          which cluster each environment lives on
 deployment-repo/<app>/           one folder per app
   argocd/<env>.yaml              the Application for that env
 ```
+
+## Bootstrap order
+
+An ApplicationSet whose AppProject doesn't exist yet fails and is only retried
+three minutes later, so sync waves put every AppProject first:
+
+- `auto-provision-clusters/`: the cluster AppProjects ApplicationSet at wave -1,
+  `shared-components` at wave 1.
+- `shared-components/`: the addons and workloads AppProjects at wave -1, the
+  two discovery ApplicationSets at wave 1.
 
 ## Apps
 

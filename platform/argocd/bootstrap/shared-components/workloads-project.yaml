@@ -1,12 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: addons
+  annotations:
+    # before the ApplicationSets that use it
+    argocd.argoproj.io/sync-wave: "-1"
+  name: workloads
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  description: AppProject for addons
+  description: AppProject for workloads
   sourceRepos:
     - "*"
   destinations:

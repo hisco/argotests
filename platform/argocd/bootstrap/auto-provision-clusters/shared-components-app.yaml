@@ -3,6 +3,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  annotations:
+    # after the cluster AppProjects (wave -1)
+    argocd.argoproj.io/sync-wave: "1"
   name: shared-components
   namespace: argocd
 spec:

@@ -4,6 +4,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
+  annotations:
+    # after the AppProjects (wave -1)
+    argocd.argoproj.io/sync-wave: "1"
   name: cluster-workloads-environments
   namespace: argocd
 spec:

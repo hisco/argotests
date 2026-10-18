@@ -3,6 +3,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
+  annotations:
+    # the cluster AppProjects first
+    argocd.argoproj.io/sync-wave: "-1"
   name: cluster-appprojects
   namespace: argocd
 spec:
