@@ -2,6 +2,10 @@ replicaCount: 1
 image:
   repository: stefanprodan/podinfo
   tag: 6.7.1
+# podinfo's image has no entrypoint, so args alone would be run as the
+# command: name the binary
+command:
+  - ./podinfo
 args:
   - --stress-memory=200
 # Defaults. Each cluster overrides the memory limit in its own values file.

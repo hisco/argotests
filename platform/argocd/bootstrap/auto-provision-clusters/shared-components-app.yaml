@@ -11,8 +11,6 @@ spec:
     repoURL: https://github.com/hisco/argotests.git
     targetRevision: main
     path: platform/argocd/bootstrap/shared-components
-    directory:
-      recurse: false
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

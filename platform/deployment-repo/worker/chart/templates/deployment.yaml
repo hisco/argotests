@@ -17,6 +17,10 @@ spec:
       containers:
         - name: worker
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+{{- with .Values.command }}
+          command:
+{{ toYaml . | indent 12 }}
+{{- end }}
 {{- with .Values.args }}
           args:
 {{ toYaml . | indent 12 }}
