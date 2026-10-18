@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pending-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: pending-web}
+  template:
+    metadata:
+      labels: {app: pending-web}
+    spec:
+      containers:
+        - name: web
+          image: registry.k8s.io/pause:3.10
+          resources:
+            requests: {memory: 16Mi}
+            limits: {memory: 64Mi}

@@ -1,0 +1,3 @@
+apiVersion: v2
+name: m2-web
+version: 0.1.0

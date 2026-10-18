@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kbase-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: kbase-web}
+  template:
+    metadata:
+      labels: {app: kbase-web}
+    spec:
+      containers:
+        - name: web
+          image: registry.k8s.io/pause:3.10
+          resources:
+            requests: {memory: 16Mi}
+            limits: {memory: 128Mi}

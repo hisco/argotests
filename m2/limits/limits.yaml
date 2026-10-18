@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: memory-max
+spec:
+  limits:
+    - type: Container
+      max: {memory: 256Mi}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: memory-quota
+spec:
+  hard:
+    limits.memory: 400Mi

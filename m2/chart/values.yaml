@@ -1,0 +1,7 @@
+image:
+  tag: "3.10"
+resources:
+  requests:
+    memory: 16Mi
+  limits:
+    memory: 128Mi

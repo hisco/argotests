@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chart-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: chart-web}
+  template:
+    metadata:
+      labels: {app: chart-web}
+    spec:
+      containers:
+        - name: web
+          image: "registry.k8s.io/pause:{{ .Values.image.tag }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
