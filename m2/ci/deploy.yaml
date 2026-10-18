@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ci-web
+  annotations:
+    ci.example/build: "1"
 spec:
   replicas: 1
   selector:
