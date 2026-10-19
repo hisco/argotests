@@ -1,0 +1,6 @@
+# Value file for the p3b-remote-chart Application: the podinfo chart comes from
+# its Helm repository, this file from Git through a $values ref source
+replicaCount: 1
+resources:
+  requests: {cpu: 1m, memory: 16Mi}
+  limits: {memory: 96Mi}

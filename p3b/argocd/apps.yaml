@@ -1,0 +1,118 @@
+# P3b fixtures: Applications with several sources, and kustomize options set in
+# the Application. Apply with kubectl; nothing else picks them up.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: p3b-git-chart
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/hisco/argotests.git
+      targetRevision: main
+      path: p3b/chart
+      helm:
+        valueFiles: [$values/p3b/values/git-chart-prod.yaml]
+    - repoURL: https://github.com/hisco/argotests.git
+      targetRevision: main
+      ref: values
+  destination: {server: https://kubernetes.default.svc, namespace: p3b-git-chart}
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: p3b-remote-chart
+  namespace: argocd
+spec:
+  project: default
+  sources:
+    - repoURL: https://stefanprodan.github.io/podinfo
+      chart: podinfo
+      targetRevision: 6.7.1
+      helm:
+        releaseName: podinfo
+        valueFiles: [$values/p3b/values/podinfo-remote.yaml]
+    - repoURL: https://github.com/hisco/argotests.git
+      targetRevision: main
+      ref: values
+  destination: {server: https://kubernetes.default.svc, namespace: p3b-remote-chart}
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: p3b-kopts
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: p3b/kopts/overlay
+    kustomize:
+      namePrefix: p3b-
+      nameSuffix: -k
+      namespace: p3b-kopts-ns
+      images: [ghcr.io/stefanprodan/podinfo:6.7.1]
+      replicas: [{name: p3b-web-k, count: 2}]
+      commonLabels: {team: p3b}
+      commonAnnotations: {owner: p3b}
+      patches:
+        - target: {kind: Deployment}
+          patch: |-
+            - op: add
+              path: /spec/template/metadata/labels/patched
+              value: "yes"
+  destination: {server: https://kubernetes.default.svc, namespace: p3b-kopts}
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: p3b-kopts-patch
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: p3b/kopts/overlay
+    kustomize:
+      namePrefix: p3b-patch-
+      patches:
+        - target: {kind: Deployment, name: web}
+          patch: |-
+            - op: replace
+              path: /spec/template/spec/containers/0/resources/limits/memory
+              value: 128Mi
+  destination: {server: https://kubernetes.default.svc, namespace: p3b-kopts-patch}
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]
+---
+# kostis-codefresh/gitops-environment-promotion qa, with the namespace set in
+# the Application's kustomize options instead of the overlay
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: p3b-promo-ns
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/kostis-codefresh/gitops-environment-promotion.git
+    targetRevision: main
+    path: envs/qa
+    kustomize:
+      namespace: p3b-promo-ns
+  destination: {server: https://kubernetes.default.svc, namespace: p3b-promo-ns}
+  syncPolicy:
+    automated: {prune: true, selfHeal: true}
+    syncOptions: [CreateNamespace=true]

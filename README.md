@@ -20,6 +20,9 @@ what it deploys.
 | `kustomize/plain` | `resources` and `patches`, one patch with a `target` block | Telling a resource file from a patch; removing either without disturbing the other |
 | `kustomize/base-overlay` | overlay whose only resource is `../../base` | An object with no file here to edit |
 | `kustomize/generators` | `configMapGenerator` reading a `.env` | An object built by the kustomization rather than declared |
+| `p3b/chart` + `p3b/values` | chart in Git, value file from a second `ref` source (`p3b-git-chart`) | Value files named `$values/...` resolve to this repository's root |
+| `p3b/values/podinfo-remote.yaml` | podinfo chart from its Helm repository, value file from Git (`p3b-remote-chart`) | The chart can't be edited; only the Git value file can |
+| `p3b/kopts` | base + overlay, with namePrefix, namespace, images, replicas, labels and patches set in the Application (`p3b-kopts`, `p3b-kopts-patch`) | Options Argo CD writes into the kustomization before it builds; one of them sets the memory limit itself |
 
 The chart templates print `.Release.Namespace`, `.Release.Name` and which values
 file won. `helm/single-overlay` also ships a CRD. Both are there so that a
