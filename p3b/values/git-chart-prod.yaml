@@ -1,2 +1,2 @@
 # Value file for the p3b-git-chart Application, read through a $values ref source
-memory: 96Mi
+memory: 128Mi
