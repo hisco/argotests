@@ -1,0 +1,4 @@
+apiVersion: v2
+name: checkout-apps
+description: Renders the checkout Application; its memory comes from this chart's values.
+version: 0.1.0

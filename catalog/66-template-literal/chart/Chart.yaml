@@ -1,0 +1,4 @@
+apiVersion: v2
+name: template-literal
+description: A local chart whose Deployment template writes the memory limit as a literal.
+version: 0.1.0

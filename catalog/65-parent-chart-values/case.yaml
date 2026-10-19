@@ -1,0 +1,26 @@
+id: 65-parent-chart-values
+title: Parent chart maps its values into a child Application
+pattern: A parent Application renders a local chart whose template writes a child Application; the child's helm.valuesObject
+  takes the memory from the parent chart's values.
+dimensions:
+- app-creation
+- source-type
+- memory-location
+sources:
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#helm-example
+- https://helm.sh/docs/chart_template_guide/function_list/#toyaml
+prevalence:
+  level: occasional
+  evidence: Argo CD documents app-of-apps charts; platform catalogs pass per-app settings through the parent chart
+    (the blind set had one).
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption rate.
+memory_set_by: catalog/65-parent-chart-values/root/values.yaml at resources.limits.memory
+support: full
+support_why: The child Application is rendered by the parent chart. Radar edits resources.limits.memory in the parent
+  chart's values.yaml and checks that the rendered child changes only there.
+expected: supported
+expected_edit:
+  file: catalog/65-parent-chart-values/root/values.yaml
+  key: resources.limits.memory
+notes:
+- Apply catalog/argocd/65-parent-chart-values.yaml only; the parent creates the child Application parent-chart-values.

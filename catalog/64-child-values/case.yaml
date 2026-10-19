@@ -1,0 +1,27 @@
+id: 64-child-values
+title: 'App of apps: child Application with helm.values in Git'
+pattern: A parent Application deploys a child Application manifest from Git; the child installs a Helm-repository
+  chart with its values written in spec.source.helm.values.
+dimensions:
+- app-creation
+- source-type
+- memory-location
+sources:
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/#app-of-apps-pattern
+- https://argo-cd.readthedocs.io/en/stable/user-guide/helm/#values
+prevalence:
+  level: common
+  evidence: Argo CD documents the app-of-apps pattern, and remote charts with inline values in each child are a
+    common bootstrap layout (the blind set had two).
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption rate.
+memory_set_by: catalog/64-child-values/apps/root/checkout.yaml at spec.source.helm.values (resources.limits.memory
+  inside the string)
+support: full
+support_why: The child Application's YAML is in Git. Radar edits resources.limits.memory inside its helm.values
+  block, in the parent's source, and the review says the edit is there.
+expected: supported
+expected_edit:
+  file: catalog/64-child-values/apps/root/checkout.yaml
+  key: spec.source.helm.values -> resources.limits.memory
+notes:
+- Apply catalog/argocd/64-child-values.yaml only; the parent creates the child Application child-values.

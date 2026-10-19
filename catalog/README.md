@@ -4,7 +4,7 @@ Each folder here is one common way teams set a container's memory limit through 
 
 | Result | Cases |
 |---|---|
-| [Supported](#supported) | 33 |
+| [Supported](#supported) | 36 |
 | [Partly supported](#partly-supported) | 4 |
 | Known bugs | 0 |
 | [Not supported](#not-supported) | 25 |
@@ -53,6 +53,9 @@ Radar opens a pull request that changes only this container's memory limit, in t
 | [54-namespace-default](54-namespace-default/case.yaml) | LimitRange supplies the Pod default | Common | Git sets no limit; a LimitRange default does. Radar adds an explicit limit to this Deployment instead of changing the default for the whole namespace. |
 | [60-identity-options](60-identity-options/case.yaml) | Application changes namespace and name | Occasional | Applies the Application's namespace and name prefix the way Argo CD does and edits the source Deployment. |
 | [62-scm-teams](62-scm-teams/case.yaml) | Organization discovery with central configuration | Occasional | Edits the shared config source of the Application the SCM generator made, read from the live Application. |
+| [64-child-values](64-child-values/case.yaml) | App of apps: child Application with helm.values in Git | Common | The child Application's YAML is in Git. Radar edits resources.limits.memory inside its helm.values block, in the parent's source, and the review says the edit is there. |
+| [65-parent-chart-values](65-parent-chart-values/case.yaml) | Parent chart maps its values into a child Application | Occasional | The child Application is rendered by the parent chart. Radar edits resources.limits.memory in the parent chart's values.yaml and checks that the rendered child changes only there. |
+| [66-template-literal](66-template-literal/case.yaml) | Memory limit written as a literal in a local chart template | Occasional | The chart is in Git and its template writes the limit as a literal. Radar edits that line and names every Application that renders the chart, or says it can't see them all. |
 
 ## Partly supported
 

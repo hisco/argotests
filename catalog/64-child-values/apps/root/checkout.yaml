@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: child-values
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://stefanprodan.github.io/podinfo
+    chart: podinfo
+    targetRevision: 6.7.1
+    helm:
+      values: |
+        fullnameOverride: child-values
+        replicaCount: 1
+        resources:
+          limits:
+            memory: 64Mi
+          requests:
+            memory: 16Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-64
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

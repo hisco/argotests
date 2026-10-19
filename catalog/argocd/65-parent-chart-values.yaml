@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cat-65-root
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/65-parent-chart-values/root
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

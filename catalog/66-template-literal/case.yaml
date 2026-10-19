@@ -1,0 +1,24 @@
+id: 66-template-literal
+title: Memory limit written as a literal in a local chart template
+pattern: A chart in Git writes the memory limit directly in its Deployment template, with no values key for it.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://helm.sh/docs/chart_best_practices/values/
+- https://github.com/aws-samples/eks-blueprints-workloads
+prevalence:
+  level: occasional
+  evidence: Team charts and reference repos often hard-code resources in templates (the blind set had one, with
+    two Deployments).
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption rate.
+memory_set_by: catalog/66-template-literal/chart/templates/deployment.yaml at spec.template.spec.containers[name=podinfo].resources.limits.memory
+support: full
+support_why: The chart is in Git and its template writes the limit as a literal. Radar edits that line and names
+  every Application that renders the chart, or says it can't see them all.
+expected: supported
+expected_edit:
+  file: catalog/66-template-literal/chart/templates/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+notes:
+- A chart fetched from a Helm repository or registry is never edited this way.
