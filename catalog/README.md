@@ -4,13 +4,13 @@ Each folder here is one common way teams set a container's memory limit through 
 
 | Result | Cases |
 |---|---|
-| [Supported](#supported) | 36 |
+| [Supported](#supported) | 38 |
 | [Partly supported](#partly-supported) | 4 |
 | Known bugs | 0 |
-| [Not supported](#not-supported) | 25 |
+| [Not supported](#not-supported) | 23 |
 | [Not verified yet](#not-verified-yet) | 1 |
 
-Status: checked live on Argo CD v3.5.5 on 2026-10-19. 62 of the 63 cases ran; case 56 needs Knative and was not run. Every pull request Radar offered was applied to a copy of the repo and rendered by Argo CD itself, and only that limit changed.
+Status: checked live on Argo CD v3.5.5 on 2026-10-19. 65 of the 66 cases ran; case 56 needs Knative and was not run. Every pull request Radar offered was applied to a copy of the repo and rendered by Argo CD itself, and only that limit changed.
 
 Each `case.yaml` has the details: where the 64Mi is set, sources for the pattern, how common it is, the expected edit or refusal, and a render command.
 
@@ -48,6 +48,8 @@ Radar opens a pull request that changes only this container's memory limit, in t
 | [39-oci-values-ref](39-oci-values-ref/case.yaml) | OCI chart and Git values | Occasional | The chart comes from a public OCI registry (ghcr.io) and values from Git. Edits the Git value file. Checked live: the change reached 128Mi. |
 | [42-strategic-file](42-strategic-file/case.yaml) | Strategic merge patch file | Common | Edits the limit in the environment's patch file. |
 | [43-json-file](43-json-file/case.yaml) | JSON6902 patch file | Common | Edits the value of the JSON6902 operation for the memory path. |
+| [44-inline-merge](44-inline-merge/case.yaml) | Inline strategic merge patch | Occasional | The patch is written inline in kustomization.yaml. Radar edits the limit inside the patch block, keeps the block's style and indentation, and checks the render. |
+| [45-inline-json](45-inline-json/case.yaml) | Inline JSON6902 patch | Occasional | The JSON6902 operation is inline in kustomization.yaml. Radar edits the value inside the operation, keeps the block as written, and checks the render. |
 | [46-label-patch](46-label-patch/case.yaml) | Patch target by label selector | Occasional | Edits the patch file that a label selector applies. |
 | [47-resource-component](47-resource-component/case.yaml) | Reusable resource component | Occasional | Edits the component's patch. |
 | [54-namespace-default](54-namespace-default/case.yaml) | LimitRange supplies the Pod default | Common | Git sets no limit; a LimitRange default does. Radar adds an explicit limit to this Deployment instead of changing the default for the whole namespace. |
@@ -78,7 +80,7 @@ Radar refuses and says why. No pull request is opened. This is on purpose: Radar
 | [18-release-tag](18-release-tag/case.yaml) | Release tag pin | Common | The Application deploys a fixed tag. A PR to a branch wouldn't change what's deployed. The Application has to move to a newer tag. |
 | [19-commit-pin](19-commit-pin/case.yaml) | Exact commit pin | Common | The Application deploys a fixed commit. A PR wouldn't change what's deployed. |
 | [20-git-sources](20-git-sources/case.yaml) | Merged Git manifest sources | Occasional | Several Git sources each produce manifests. Radar can't combine them into one render. |
-| [22-repo-inline](22-repo-inline/case.yaml) | Remote chart with inline values | Common | The chart comes from a Helm repo and the values are inline in the Application. There's no Git file to edit. |
+| [22-repo-inline](22-repo-inline/case.yaml) | Remote chart with inline values | Common | The chart comes from a Helm repo and the values are inline in the Application, which no other Application deploys from Git. Radar says to change the Application where it's defined. |
 | [26-container-list](26-container-list/case.yaml) | Values list per container | Occasional | Containers are a list in values. Radar won't pick a list item by position, so it refuses. |
 | [30-inline-values](30-inline-values/case.yaml) | Inline YAML values | Common | The limit is set in the Application's `helm.values`, not in a Git file Radar edits. Change it in the Application. |
 | [31-values-object](31-values-object/case.yaml) | Inline valuesObject | Common | The limit is set in the Application's `helm.valuesObject`. Change it in the Application. |
@@ -86,8 +88,6 @@ Radar refuses and says why. No pull request is opened. This is on purpose: Radar
 | [35-source-default](35-source-default/case.yaml) | Repository source override | Occasional | A `.argocd-source.yaml` file sets the limit as a parameter. Radar finds it and says to change it there. |
 | [36-source-app](36-source-app/case.yaml) | Namespaced application source override | Occasional | The limit is set by a parameter in `.argocd-source-<namespace>_<app>.yaml`, the per-app file Argo CD reads for an Application outside the argocd namespace. Radar finds it, refuses, and says to change it in that file. |
 | [40-chart-range](40-chart-range/case.yaml) | Chart version range | Occasional | The chart version is a range. Radar can't resolve it the way Argo CD does, so it can't be sure which chart is live. |
-| [44-inline-merge](44-inline-merge/case.yaml) | Inline strategic merge patch | Occasional | The patch is written inline in kustomization.yaml. Radar won't rewrite an inline patch block. |
-| [45-inline-json](45-inline-json/case.yaml) | Inline JSON6902 patch | Occasional | The JSON6902 operation is inline in kustomization.yaml. Radar won't rewrite it. |
 | [48-config-replacement](48-config-replacement/case.yaml) | ConfigMap field replacement | Occasional | A Kustomize replacement copies the limit from a ConfigMap. Radar doesn't edit through replacements. |
 | [49-generated-memory](49-generated-memory/case.yaml) | Generated ConfigMap replacement | Occasional | The limit comes from a generated ConfigMap through a replacement. Radar doesn't edit generator inputs. |
 | [50-remote-base](50-remote-base/case.yaml) | Pinned remote Kustomize base | Occasional | The base is in another Git repo. Radar doesn't fetch remote Kustomize bases. |

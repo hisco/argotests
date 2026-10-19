@@ -43,7 +43,7 @@ def main():
         out.append(f"| {name} | {count[key]} |")
     out += [
         "",
-        "Status: checked live on Argo CD v3.5.5 on 2026-10-19. 62 of the 63 cases ran; case 56 needs Knative and was not run. Every pull request Radar offered was applied to a copy of the repo and rendered by Argo CD itself, and only that limit changed.",
+        "Status: checked live on Argo CD v3.5.5 on 2026-10-19. 65 of the 66 cases ran; case 56 needs Knative and was not run. Every pull request Radar offered was applied to a copy of the repo and rendered by Argo CD itself, and only that limit changed.",
         "",
         "Each `case.yaml` has the details: where the 64Mi is set, sources for the pattern, how common it is, the expected edit or refusal, and a render command.",
         "",

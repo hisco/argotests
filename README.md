@@ -4,14 +4,14 @@ Test repository for Radar's "fix it in Git": Radar finds where a container's mem
 
 ## What Radar supports
 
-Start with [catalog/](catalog/README.md). It has 63 common ways teams lay out GitOps repos, grouped by what Radar does with each one:
+Start with [catalog/](catalog/README.md). It has 66 common ways teams lay out GitOps repos, grouped by what Radar does with each one:
 
 | Result | Cases | Meaning |
 |---|---|---|
-| [Supported](catalog/README.md#supported) | 33 | Opens a pull request that changes only that limit. |
+| [Supported](catalog/README.md#supported) | 38 | Opens a pull request that changes only that limit. |
 | [Partly supported](catalog/README.md#partly-supported) | 4 | Finds the right change, with a condition or side effect the case explains. |
 | Known bugs | 0 | Radar gets it wrong: a PR that changes nothing, or an unfair refusal. None open today. |
-| [Not supported](catalog/README.md#not-supported) | 25 | Refuses with a reason. On purpose: the change can't be made safely there. |
+| [Not supported](catalog/README.md#not-supported) | 23 | Refuses with a reason. On purpose: the change can't be made safely there. |
 | [Not verified yet](catalog/README.md#not-verified-yet) | 1 | Not run live yet. |
 
 Every case has the reason, sources for the pattern, and how common it is.

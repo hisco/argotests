@@ -10,25 +10,23 @@ sources:
 prevalence:
   level: common
   evidence: Argo CD documents both remote charts and inline values.
-  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
-    rate.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption rate.
 memory_set_by: catalog/argocd/22-repo-inline.yaml at spec.source.helm.values
 support: none
-support_why: "The chart comes from a Helm repo and the values are inline in the Application. There's no Git file to edit."
+support_why: The chart comes from a Helm repo and the values are inline in the Application, which no other Application
+  deploys from Git. Radar says to change the Application where it's defined.
 expected: not-supported
 expected_edit: null
 expected_reason:
-  code: generated-source
-  message: 'Radar can''t edit this source: the chart comes from a Helm repository and the Application
-    takes no value file from Git.'
-  detail: the chart comes from a Helm repository and the Application takes no value file from Git
+  code: app-spec-values
+  detail: the value is set in Application repo-inline's own spec, and no Application Radar can see deploys that
+    spec from Git, so change it where Application repo-inline is defined
 notes:
-- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
-  and matches the live render. No live cluster was changed.
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version, and
+  matches the live render. No live cluster was changed.
 render_check:
-  command: helm template repo-inline podinfo --repo https://stefanprodan.github.io/podinfo --version 6.7.1
-    --namespace cat-22 --set fullnameOverride=repo-inline --set replicaCount=1 --set resources.requests.memory=16Mi
-    --set resources.limits.memory=64Mi
+  command: helm template repo-inline podinfo --repo https://stefanprodan.github.io/podinfo --version 6.7.1 --namespace
+    cat-22 --set fullnameOverride=repo-inline --set replicaCount=1 --set resources.requests.memory=16Mi --set resources.limits.memory=64Mi
   tool: Helm 4.3.0
   result: passed
   deployment: repo-inline
