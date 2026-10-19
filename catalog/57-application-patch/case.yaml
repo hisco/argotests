@@ -13,6 +13,8 @@ prevalence:
     percentage is claimed.
 memory_set_by: 'catalog/argocd/57-application-patch.yaml: spec.source.kustomize.patches[0].patch
   memory scalar'
+support: none
+support_why: "A Kustomize patch inside the Application sets the limit. Change it in the Application."
 expected: not-supported
 notes: []
 render_check:

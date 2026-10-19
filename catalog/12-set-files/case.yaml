@@ -16,6 +16,8 @@ memory_set_by:
   file: catalog/12-set-files/envs/prod/apps/checkout/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
+support: full
+support_why: "Edits the source path the generated Application reads."
 expected: supported
 notes:
 - Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,

@@ -14,6 +14,8 @@ prevalence:
 memory_set_by: 'catalog/60-identity-options/apps/checkout/deployment.yaml: source
   Deployment options container podinfo resources.limits.memory; Application transforms
   identity.'
+support: full
+support_why: "Applies the Application's namespace and name prefix the way Argo CD does and edits the source Deployment."
 expected: supported
 notes: []
 render_check:

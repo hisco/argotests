@@ -14,6 +14,8 @@ memory_set_by:
   file: catalog/17-team-app/apps/checkout/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
+support: full
+support_why: "An Application outside the argocd namespace is handled the same way. Argo CD itself must be set up to allow it."
 expected: supported
 notes:
 - Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,

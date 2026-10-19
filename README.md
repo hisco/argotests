@@ -1,14 +1,28 @@
 # argotests
 
-Argo CD applications in the shapes that make source editing hard, so a tool can
-be tested against them rather than against one repository that happens to be
-handy.
+Test repository for Radar's "fix it in Git": Radar finds where a container's memory limit is set in the Git repo an Argo CD Application deploys from, and opens a pull request there, or refuses and says why.
 
-Everything here renders ConfigMaps. Nothing runs, nothing pulls an image, and a
-whole cluster of it costs nothing — the point is the *shape* of each source, not
-what it deploys.
+## What Radar supports
 
-## What each shape is for
+Start with [catalog/](catalog/README.md). It has 63 common ways teams lay out GitOps repos, grouped by what Radar does with each one:
+
+| Result | Cases | Meaning |
+|---|---|---|
+| [Supported](catalog/README.md#supported) | 29 | Opens a pull request that changes only that limit. |
+| [Partly supported](catalog/README.md#partly-supported) | 8 | Opens a pull request, with a condition or side effect the case explains. |
+| [Known bugs](catalog/README.md#known-bugs) | 1 | Opens a pull request that is wrong. To be fixed. |
+| [Not supported](catalog/README.md#not-supported) | 23 | Refuses with a reason. On purpose: the change can't be made safely there. |
+| [Not verified yet](catalog/README.md#not-verified-yet) | 2 | No pull request expected; exact behaviour not checked live yet. |
+
+Every case has the reason, sources for the pattern, and how common it is.
+
+## Other folders
+
+The folders below are older, narrower fixtures. Each one targets a specific hard shape or a regression found while building, so they aren't a list of what's supported. `platform/` is a full app-of-apps layout used for the end-to-end runs.
+
+The shape folders (`helm/`, `kustomize/`, `ambiguous/`) render ConfigMaps. Nothing in them runs, nothing pulls an image, and a whole cluster of it costs nothing. The point is the *shape* of each source, not what it deploys.
+
+### What each shape is for
 
 | Path | Shape | What it exercises |
 |---|---|---|
@@ -45,7 +59,7 @@ kubectl -n argocd get applications
 
 Argo is configured with `kustomize.buildOptions: --enable-helm --load-restrictor
 LoadRestrictionsNone`. Both are needed by a kustomization that inflates a chart,
-and without them a converted application simply fails to render — which looks
+and without them a converted application simply fails to render, which looks
 like a bad conversion rather than a missing cluster setting.
 
 `hack/compare-objects.py` compares two sets of rendered objects by identity, so
@@ -63,7 +77,7 @@ points each of the others at a directory nobody created, and Argo answers:
 Failed to load target state: ... app path does not exist
 ```
 
-That is not hypothetical — it is what `helm/multi-inline` did on this cluster
+That is not hypothetical. It is what `helm/multi-inline` did on this cluster
 when only its `prod` overlay was converted. The shape is here so that a tool
 converting one application has to notice the others.
 

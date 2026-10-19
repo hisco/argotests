@@ -12,6 +12,8 @@ prevalence:
     percentage is claimed.
 memory_set_by: Application spec.source.plugin.env[name=MEMORY_LIMIT].value; render.sh
   substitutes ARGOCD_ENV_MEMORY_LIMIT in deployment.yaml.in.
+support: none
+support_why: "A config management plugin builds the manifests. Radar can't run it."
 expected: not-supported
 notes:
 - 'Prerequisite: an Argo CD administrator must install the named CMP sidecar and load

@@ -13,6 +13,8 @@ prevalence:
     percentage is claimed.
 memory_set_by: 'catalog/51-helm-in-kustomize/apps/checkout/charts/checkout/values.yaml:
   resources.limits.memory'
+support: none
+support_why: "Kustomize inflates a Helm chart (`helmCharts`). Radar doesn't support that, even when the chart is in the repo."
 expected: not-supported
 notes:
 - 'Argo CD needs kustomize.buildOptions: --enable-helm in argocd-cm. The chart is

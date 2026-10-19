@@ -16,6 +16,8 @@ memory_set_by:
   file: catalog/05-env-branch/apps/checkout/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
+support: partial
+support_why: "Opens the PR into the branch the Application tracks, and warns that the next promotion into that branch can overwrite it."
 expected: supported
 notes:
 - Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,

@@ -17,6 +17,8 @@ memory_set_by:
   file: catalog/63-pr-preview/apps/checkout/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
+support: none
+support_why: "A PR preview app is pinned to the PR's head commit. A new PR wouldn't change it."
 expected: not-supported
 notes:
 - Baseline prediction assumes a readable synced live Application and Deployment, connected writable GitHub

@@ -15,6 +15,8 @@ prevalence:
     adoption count was found.
 memory_set_by: 'catalog/49-generated-memory/apps/checkout/resources.env: memory=64Mi,
   read by configMapGenerator then replacements'
+support: none
+support_why: "The limit comes from a generated ConfigMap through a replacement. Radar doesn't edit generator inputs."
 expected: not-supported
 notes:
 - The candidate list includes the Deployment origin, Kustomization files and patch

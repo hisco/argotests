@@ -15,6 +15,8 @@ prevalence:
     percentage is claimed.
 memory_set_by: 'catalog/44-inline-merge/apps/checkout/envs/prod/kustomization.yaml:
   patches[0].patch multiline strategic merge patch'
+support: none
+support_why: "The patch is written inline in kustomization.yaml. Radar won't rewrite an inline patch block."
 expected: not-supported
 notes: []
 render_check:

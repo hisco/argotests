@@ -13,6 +13,8 @@ prevalence:
   evidence: Kubernetes has a dedicated administrator task for namespace memory defaults.
 memory_set_by: 'catalog/54-namespace-default/apps/checkout/defaults.yaml: spec.limits[type=Container].default.memory.
   Admission applies it to Pods, not the Deployment.'
+support: full
+support_why: "Git sets no limit; a LimitRange default does. Radar adds an explicit limit to this Deployment instead of changing the default for the whole namespace."
 expected: supported
 notes:
 - 'Intentional render exception: the Deployment template has no limit. A normal offline

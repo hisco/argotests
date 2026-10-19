@@ -13,6 +13,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/29-values-layers/clusters/eu-west/values.yaml at resources.limits.memory
+support: full
+support_why: "Edits the value file that wins for this environment, here the cluster file."
 expected: supported
 expected_edit:
   file: catalog/29-values-layers/clusters/eu-west/values.yaml

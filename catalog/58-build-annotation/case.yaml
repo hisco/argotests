@@ -12,6 +12,8 @@ prevalence:
   evidence: This is a documented upstream feature with worked examples. No adoption
     percentage is claimed.
 memory_set_by: 'catalog/58-build-annotation/apps/checkout/deployment.yaml: spec.template.spec.containers[name=podinfo].resources.limits.memory'
+support: none
+support_why: "The Application's Kustomize options use a build variable Radar can't fill in, so it can't reproduce the render."
 expected: not-supported
 notes:
 - The annotation does not set memory. Radar refuses before rendering because it cannot

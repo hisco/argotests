@@ -14,6 +14,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/39-oci-values-ref/envs/prod/values.yaml at resources.limits.memory
+support: full
+support_why: "The chart comes from an OCI registry and values from Git. Edits the Git value file."
 expected: supported
 expected_edit:
   file: catalog/39-oci-values-ref/envs/prod/values.yaml

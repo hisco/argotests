@@ -14,6 +14,8 @@ prevalence:
     adoption count was found.
 memory_set_by: 'catalog/48-config-replacement/apps/checkout/resources.yaml: ConfigMap
   checkout-resources data.memory, copied by replacements'
+support: none
+support_why: "A Kustomize replacement copies the limit from a ConfigMap. Radar doesn't edit through replacements."
 expected: not-supported
 notes:
 - The candidate list includes the Deployment origin, Kustomization files and patch

@@ -14,6 +14,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/40-chart-range/envs/prod/values.yaml at resources.limits.memory
+support: none
+support_why: "The chart version is a range. Radar can't resolve it the way Argo CD does, so it can't be sure which chart is live."
 expected: not-supported
 expected_edit: null
 expected_reason:

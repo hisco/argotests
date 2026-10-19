@@ -11,6 +11,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/28-resources-tpl/apps/checkout/values.yaml at memoryLimit
+support: full
+support_why: "Edits `memoryLimit`, after proving by render that the `tpl` string uses it."
 expected: supported
 expected_edit:
   file: catalog/28-resources-tpl/apps/checkout/values.yaml

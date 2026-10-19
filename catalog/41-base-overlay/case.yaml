@@ -18,6 +18,8 @@ prevalence:
     Kustomize bases and overlays.
 memory_set_by: 'catalog/41-base-overlay/apps/checkout/base/deployment.yaml: container
   podinfo resources.limits.memory'
+support: partial
+support_why: "Edits the limit in the shared base. Every overlay built on that base changes too. Radar says so, but it doesn't add an overlay patch for one environment."
 expected: supported
 notes: []
 render_check:

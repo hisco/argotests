@@ -12,6 +12,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/23-umbrella/apps/checkout/values.yaml at checkout.resources.limits.memory
+support: full
+support_why: "Edits `checkout.resources.limits.memory` in the parent chart's values."
 expected: supported
 expected_edit:
   file: catalog/23-umbrella/apps/checkout/values.yaml

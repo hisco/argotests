@@ -14,6 +14,8 @@ memory_set_by:
   file: catalog/04-config-repo/clusters/production/checkout/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
+support: full
+support_why: "Edits the config repo. The app's code repo isn't needed."
 expected: supported
 notes:
 - Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,

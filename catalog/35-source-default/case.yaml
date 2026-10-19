@@ -11,6 +11,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/35-source-default/apps/checkout/.argocd-source.yaml at helm.parameters[0].value
+support: none
+support_why: "A `.argocd-source.yaml` file sets the limit as a parameter. Radar finds it and says to change it there."
 expected: not-supported
 expected_edit: null
 expected_reason:

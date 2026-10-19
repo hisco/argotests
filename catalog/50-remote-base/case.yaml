@@ -14,6 +14,8 @@ prevalence:
     percentage is claimed.
 memory_set_by: 'catalog/50-remote-base/apps/checkout/resources.yaml: resources replacement
   on the pinned upstream Deployment'
+support: none
+support_why: "The base is in another Git repo. Radar doesn't fetch remote Kustomize bases."
 expected: not-supported
 notes:
 - The pinned remote base also contains Service and HPA resources. This overlay sets

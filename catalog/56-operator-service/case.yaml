@@ -17,6 +17,8 @@ prevalence:
     within Knative.
 memory_set_by: 'catalog/56-operator-service/apps/checkout/service.yaml: Knative Service
   spec.template.spec.containers[name=podinfo].resources.limits.memory'
+support: unverified
+support_why: "Not verified yet. Knative creates the Deployment from a Service in Git. Radar either treats it as not GitOps-managed or refuses; either way no PR. A live run decides which."
 expected: unsure
 notes:
 - 'Intentional render exception: Git contains a Knative Service, not its generated

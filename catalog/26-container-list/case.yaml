@@ -11,6 +11,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/26-container-list/apps/checkout/values.yaml at containers[0].resources.limits.memory
+support: none
+support_why: "Containers are a list in values. Radar won't pick a list item by position, so it refuses."
 expected: not-supported
 expected_edit: null
 expected_reason:

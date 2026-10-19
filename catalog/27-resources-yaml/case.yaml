@@ -12,6 +12,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/27-resources-yaml/apps/checkout/values.yaml at resources.limits.memory
+support: full
+support_why: "Edits `resources.limits.memory` that the template passes through `toYaml`."
 expected: supported
 expected_edit:
   file: catalog/27-resources-yaml/apps/checkout/values.yaml

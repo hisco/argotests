@@ -15,6 +15,8 @@ prevalence:
     multi-cluster template composes cluster groups with kind: Component.'
 memory_set_by: 'catalog/47-resource-component/apps/checkout/components/small/resources.yaml:
   container podinfo resources.limits.memory'
+support: full
+support_why: "Edits the component's patch."
 expected: supported
 notes: []
 render_check:

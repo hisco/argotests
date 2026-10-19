@@ -11,6 +11,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/argocd/32-helm-parameter.yaml in spec.source.helm
+support: none
+support_why: "The limit is a Helm parameter in the Application. Change it in the Application."
 expected: not-supported
 expected_edit: null
 expected_reason:

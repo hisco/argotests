@@ -11,6 +11,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/34-release-options/apps/checkout/values.yaml at resources.limits.memory
+support: partial
+support_why: "The edit is right. Radar's own render includes CRDs while Argo CD skips them, so its check can show \"not checked\"."
 expected: supported
 expected_edit:
   file: catalog/34-release-options/apps/checkout/values.yaml

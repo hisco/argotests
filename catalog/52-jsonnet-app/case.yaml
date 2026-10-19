@@ -13,6 +13,8 @@ prevalence:
     percentage is claimed.
 memory_set_by: Application spec.source.directory.jsonnet.extVars[name=memory].value;
   deployment.jsonnet reads std.extVar("memory").
+support: none
+support_why: "Jsonnet code builds the Deployment. Radar doesn't edit Jsonnet."
 expected: not-supported
 notes:
 - Validated with go-jsonnet 0.21.0. Install its jsonnet executable on PATH before

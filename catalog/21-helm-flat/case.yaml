@@ -12,6 +12,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/21-helm-flat/apps/checkout/values.yaml at memoryLimit
+support: full
+support_why: "Edits `memoryLimit` in the chart's values."
 expected: supported
 expected_edit:
   file: catalog/21-helm-flat/apps/checkout/values.yaml

@@ -17,6 +17,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/38-chart-values-ref/envs/prod/values.yaml at resources.limits.memory
+support: full
+support_why: "The chart comes from a Helm repo and values from Git (`$values`). Edits the Git value file."
 expected: supported
 expected_edit:
   file: catalog/38-chart-values-ref/envs/prod/values.yaml

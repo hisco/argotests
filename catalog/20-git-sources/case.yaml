@@ -14,6 +14,8 @@ memory_set_by:
   file: catalog/20-git-sources/apps/checkout/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
+support: none
+support_why: "Several Git sources each produce manifests. Radar can't combine them into one render."
 expected: not-supported
 notes:
 - Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
