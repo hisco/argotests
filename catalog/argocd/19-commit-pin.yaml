@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/hisco/argotests.git
-    targetRevision: 1aae77ad67138686544a33f739fa7b6edca2120a
+    targetRevision: b72b44898fae1cfbed33aadbad4d3d0005fab2cb
     path: catalog/19-commit-pin/apps/checkout
   destination:
     server: https://kubernetes.default.svc

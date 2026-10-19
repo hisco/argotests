@@ -15,9 +15,7 @@ support: none
 support_why: "The Application uses an admin-registered Kustomize version Radar can't run."
 expected: not-supported
 notes:
-- 'Prerequisite: the Argo CD administrator must register kustomize.path.v5.6.0. The
-  local kustomize binary is v5.6.0, so the recorded local render uses that version.
-  Radar refuses the explicit version even for a simple source.'
+- 'Prerequisite: the Argo CD administrator registers kustomize.path.v5.8.1 (the kustomize bundled with Argo CD v3.5.5).'
 render_check:
   command: kustomize build catalog/59-custom-kustomize/apps/checkout
   result: 'Passed: exactly one Deployment named custom-kustomize in cat-59; podinfo
@@ -26,6 +24,6 @@ render_check:
   - kustomize 5.6.0
 expected_reason:
   code: app-spec-values
-  message: the Application builds with kustomize v5.6.0, which Radar can't run
+  message: the Application builds with kustomize v5.8.1, which Radar can't run
   ui_message: 'Radar can''t change this from here: the value is in the Application''s
     own spec, which Radar doesn''t change yet.'

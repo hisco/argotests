@@ -17,7 +17,7 @@ memory_set_by:
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
 support: partial
-support_why: "Opens the PR, but the edited Deployment file is shared by other environments' entry points, so those change too. Radar names them and asks you to confirm."
+support_why: "Opens the PR. The file it edits could be read by other environments, so Radar warns that apps it can't see may change too. It doesn't name them."
 expected: supported
 notes:
 - Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,

@@ -18,8 +18,8 @@ memory_set_by:
   file: catalog/62-scm-teams/apps/argo-cd/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
-support: partial
-support_why: "Works from the live generated Application. Radar can't expand SCM-provider discovery from Git alone."
+support: full
+support_why: "Edits the shared config source of the Application the SCM generator made, read from the live Application."
 expected: supported
 expected_edit:
   file: catalog/62-scm-teams/apps/argo-cd/deployment.yaml

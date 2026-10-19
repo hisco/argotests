@@ -8,11 +8,11 @@ Start with [catalog/](catalog/README.md). It has 63 common ways teams lay out Gi
 
 | Result | Cases | Meaning |
 |---|---|---|
-| [Supported](catalog/README.md#supported) | 29 | Opens a pull request that changes only that limit. |
-| [Partly supported](catalog/README.md#partly-supported) | 8 | Opens a pull request, with a condition or side effect the case explains. |
-| [Known bugs](catalog/README.md#known-bugs) | 1 | Opens a pull request that is wrong. To be fixed. |
-| [Not supported](catalog/README.md#not-supported) | 23 | Refuses with a reason. On purpose: the change can't be made safely there. |
-| [Not verified yet](catalog/README.md#not-verified-yet) | 2 | No pull request expected; exact behaviour not checked live yet. |
+| [Supported](catalog/README.md#supported) | 31 | Opens a pull request that changes only that limit. |
+| [Partly supported](catalog/README.md#partly-supported) | 5 | Finds the right change, with a condition or side effect the case explains. |
+| [Known bugs](catalog/README.md#known-bugs) | 2 | Radar gets it wrong: a PR that changes nothing, or an unfair refusal. To be fixed. |
+| [Not supported](catalog/README.md#not-supported) | 24 | Refuses with a reason. On purpose: the change can't be made safely there. |
+| [Not verified yet](catalog/README.md#not-verified-yet) | 1 | Not run live yet. |
 
 Every case has the reason, sources for the pattern, and how common it is.
 

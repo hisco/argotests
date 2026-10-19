@@ -12,7 +12,7 @@ prevalence:
     rate.
 memory_set_by: catalog/34-release-options/apps/checkout/values.yaml at resources.limits.memory
 support: partial
-support_why: "The edit is right. Radar's own render includes CRDs while Argo CD skips them, so its check can show \"not checked\"."
+support_why: "Shows the right file and edit, but doesn't open the PR itself. Radar's render includes the chart's CRDs while Argo CD skips them (skipCrds), so Radar can't prove the render matches and asks you to make the change."
 expected: supported
 expected_edit:
   file: catalog/34-release-options/apps/checkout/values.yaml

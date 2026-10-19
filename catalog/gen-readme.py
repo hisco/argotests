@@ -10,8 +10,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 SECTIONS = [
     ("full", "Supported", "Radar opens a pull request that changes only this container's memory limit, in the file and key listed."),
-    ("partial", "Partly supported", "Radar opens a pull request, with a condition or side effect you should know about. The reason says which."),
-    ("bug", "Known bugs", "Radar opens a pull request that is wrong. These are bugs, not limits we accept."),
+    ("partial", "Partly supported", "Radar finds the right change, with a condition or side effect you should know about. The reason says which."),
+    ("bug", "Known bugs", "Radar gets these wrong: a pull request that changes nothing, or a refusal of a setup it should handle. These are bugs, not limits we accept."),
     ("none", "Not supported", "Radar refuses and says why. No pull request is opened. This is on purpose: Radar can't make the change safely in this setup."),
     ("unverified", "Not verified yet", "No pull request is expected, but Radar's exact behaviour hasn't been checked on a live cluster."),
 ]
@@ -42,7 +42,7 @@ def main():
         out.append(f"| [{title}](#{title.lower().replace(' ', '-')}) | {count[key]} |")
     out += [
         "",
-        "Status: the results come from reading Radar's code and rendering each fixture offline. A live run on Argo CD v3.5.5 is in progress, and this page will be updated from it.",
+        "Status: checked live on Argo CD v3.5.5 on 2026-10-19. 62 of the 63 cases ran; case 56 needs Knative and was not run. Every pull request Radar offered was applied to a copy of the repo and rendered by Argo CD itself, and only that limit changed, except in the known bugs.",
         "",
         "Each `case.yaml` has the details: where the 64Mi is set, sources for the pattern, how common it is, the expected edit or refusal, and a render command.",
         "",

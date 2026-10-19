@@ -10,7 +10,7 @@ spec:
     targetRevision: main
     path: catalog/59-custom-kustomize/apps/checkout
     kustomize:
-      version: v5.6.0
+      version: v5.8.1
   destination:
     server: https://kubernetes.default.svc
     namespace: cat-59

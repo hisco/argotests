@@ -16,8 +16,8 @@ memory_set_by:
   file: catalog/14-set-clusters/envs/prod/apps/checkout/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
-support: partial
-support_why: "Works when Radar can read the live generated Applications. It can't work out cluster-label membership from Git alone."
+support: full
+support_why: "Edits the source of the Application the cluster generator made, read from the live Application."
 expected: supported
 notes:
 - Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,

@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/hisco/argotests.git
-    targetRevision: v1
+    targetRevision: v2
     path: catalog/18-release-tag/apps/checkout
   destination:
     server: https://kubernetes.default.svc

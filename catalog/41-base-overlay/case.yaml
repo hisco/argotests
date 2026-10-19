@@ -19,7 +19,7 @@ prevalence:
 memory_set_by: 'catalog/41-base-overlay/apps/checkout/base/deployment.yaml: container
   podinfo resources.limits.memory'
 support: partial
-support_why: "Edits the limit in the shared base. Every overlay built on that base changes too. Radar says so, but it doesn't add an overlay patch for one environment."
+support_why: "Opens the PR, editing the limit in the shared base. Every overlay built on that base changes too. Radar warns that apps it can't see may change, but it doesn't add a patch for just one environment."
 expected: supported
 notes: []
 render_check:

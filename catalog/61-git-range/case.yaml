@@ -17,8 +17,8 @@ memory_set_by:
   file: catalog/61-git-range/apps/checkout/deployment.yaml
   key: spec.template.spec.containers[name=podinfo].resources.limits.memory
   value: 64Mi
-support: unverified
-support_why: "Not verified yet. The Application tracks a semver range of prefixed tags. Radar doesn't select tags, so it's expected to fail while planning, not open a PR."
+support: none
+support_why: "The Application follows a semver range of tags, so a PR into a branch won't deploy. Radar can't follow tag ranges. Today it shows a raw error instead of saying this (bug in the message)."
 expected: unsure
 notes:
 - Baseline prediction assumes a readable synced live Application and Deployment, connected writable GitHub
