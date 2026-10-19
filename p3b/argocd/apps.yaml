@@ -68,7 +68,9 @@ spec:
             - op: add
               path: /spec/template/metadata/labels/patched
               value: "yes"
-  destination: {server: https://kubernetes.default.svc, namespace: p3b-kopts}
+  # CreateNamespace makes the destination namespace, so it names the one
+  # the kustomize namespace option moves the objects to
+  destination: {server: https://kubernetes.default.svc, namespace: p3b-kopts-ns}
   syncPolicy:
     automated: {prune: true, selfHeal: true}
     syncOptions: [CreateNamespace=true]
