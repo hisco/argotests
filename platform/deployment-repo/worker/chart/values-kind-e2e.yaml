@@ -1,4 +1,4 @@
 # kind-e2e overrides for worker
 resources:
   limits:
-    memory: 64Mi
+    memory: 256Mi
