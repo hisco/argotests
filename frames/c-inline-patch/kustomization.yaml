@@ -1,0 +1,19 @@
+resources:
+  - deployment.yaml
+patches:
+  - target:
+      kind: Deployment
+      name: frames-c
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: frames-c
+      spec:
+        template:
+          spec:
+            containers:
+              - name: worker
+                resources:
+                  limits:
+                    memory: 64Mi

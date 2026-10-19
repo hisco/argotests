@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: frames-a
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: frames/a-child/chart
+    helm:
+      values: |
+        resources:
+          requests:
+            memory: 16Mi
+          limits:
+            memory: 64Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: frames-a
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

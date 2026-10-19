@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frames-b
+  labels:
+    app: frames-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frames-b
+  template:
+    metadata:
+      labels:
+        app: frames-b
+    spec:
+      containers:
+        - name: worker
+          image: stefanprodan/podinfo:6.7.1
+          command: [./podinfo]
+          args: [--stress-memory=200]
+          resources:
+            requests:
+              memory: 16Mi
+            limits:
+              memory: 64Mi
