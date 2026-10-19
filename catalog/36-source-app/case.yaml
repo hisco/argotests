@@ -15,8 +15,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/36-source-app/apps/checkout/.argocd-source-team-checkout_source-app.yaml at helm.parameters[0].value
-support: bug
-support_why: "Known bug, confirmed live. For an Application outside the argocd namespace, Argo CD reads `.argocd-source-<namespace>_<app>.yaml`. Radar doesn't look for that name, so it edits values.yaml, which the source file overrides. After merge the pods still run 64Mi."
+support: none
+support_why: "The limit is set by a parameter in `.argocd-source-<namespace>_<app>.yaml`, the per-app file Argo CD reads for an Application outside the argocd namespace. Radar finds it, refuses, and says to change it in that file."
 expected: wrong
 expected_edit: null
 expected_reason: null

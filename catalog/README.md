@@ -4,13 +4,13 @@ Each folder here is one common way teams set a container's memory limit through 
 
 | Result | Cases |
 |---|---|
-| [Supported](#supported) | 31 |
-| [Partly supported](#partly-supported) | 5 |
-| [Known bugs](#known-bugs) | 2 |
-| [Not supported](#not-supported) | 24 |
+| [Supported](#supported) | 33 |
+| [Partly supported](#partly-supported) | 4 |
+| Known bugs | 0 |
+| [Not supported](#not-supported) | 25 |
 | [Not verified yet](#not-verified-yet) | 1 |
 
-Status: checked live on Argo CD v3.5.5 on 2026-10-19. 62 of the 63 cases ran; case 56 needs Knative and was not run. Every pull request Radar offered was applied to a copy of the repo and rendered by Argo CD itself, and only that limit changed, except in the known bugs.
+Status: checked live on Argo CD v3.5.5 on 2026-10-19. 62 of the 63 cases ran; case 56 needs Knative and was not run. Every pull request Radar offered was applied to a copy of the repo and rendered by Argo CD itself, and only that limit changed.
 
 Each `case.yaml` has the details: where the 64Mi is set, sources for the pattern, how common it is, the expected edit or refusal, and a render command.
 
@@ -42,8 +42,10 @@ Radar opens a pull request that changes only this container's memory limit, in t
 | [28-resources-tpl](28-resources-tpl/case.yaml) | Resources through tpl | Occasional | Edits `memoryLimit`, after proving by render that the `tpl` string uses it. |
 | [29-values-layers](29-values-layers/case.yaml) | Environment and cluster value layers | Common | Edits the value file that wins for this environment, here the cluster file. |
 | [33-optional-values](33-optional-values/case.yaml) | Optional environment values | Occasional | Skips the missing optional file and edits the file that sets the limit. |
+| [34-release-options](34-release-options/case.yaml) | Release and namespace options | Occasional | Radar's render follows skipCrds the way Argo CD does, so it opens the PR. The edit was checked with Argo CD's own render. |
 | [37-build-env-values](37-build-env-values/case.yaml) | Build environment value path | Occasional | Fills in `$ARGOCD_APP_NAME` in the value-file path and edits that file. |
 | [38-chart-values-ref](38-chart-values-ref/case.yaml) | Helm repository chart and Git values | Common | The chart comes from a Helm repo and values from Git (`$values`). Edits the Git value file. |
+| [39-oci-values-ref](39-oci-values-ref/case.yaml) | OCI chart and Git values | Occasional | The chart comes from a public OCI registry (ghcr.io) and values from Git. Edits the Git value file. Checked live: the change reached 128Mi. |
 | [42-strategic-file](42-strategic-file/case.yaml) | Strategic merge patch file | Common | Edits the limit in the environment's patch file. |
 | [43-json-file](43-json-file/case.yaml) | JSON6902 patch file | Common | Edits the value of the JSON6902 operation for the memory path. |
 | [46-label-patch](46-label-patch/case.yaml) | Patch target by label selector | Occasional | Edits the patch file that a label selector applies. |
@@ -60,18 +62,8 @@ Radar finds the right change, with a condition or side effect you should know ab
 |---|---|---|---|
 | [01-mono-envs](01-mono-envs/case.yaml) | Apps and environments in one repository | Common | Opens the PR. The file it edits could be read by other environments, so Radar warns that apps it can't see may change too. It doesn't name them. |
 | [05-env-branch](05-env-branch/case.yaml) | Production branch promotion | Occasional | Opens the PR into the branch the Application tracks, and warns that the next promotion into that branch can overwrite it. |
-| [34-release-options](34-release-options/case.yaml) | Release and namespace options | Occasional | Shows the right file and edit, but doesn't open the PR itself. Radar's render includes the chart's CRDs while Argo CD skips them (skipCrds), so Radar can't prove the render matches and asks you to make the change. |
 | [41-base-overlay](41-base-overlay/case.yaml) | Base plus production overlay | Common | Opens the PR, editing the limit in the shared base. Every overlay built on that base changes too. Radar warns that apps it can't see may change, but it doesn't add a patch for just one environment. |
 | [55-vertical-policy](55-vertical-policy/case.yaml) | VPA scales limits from the template ratio | Occasional | Edits the template limit, and warns that VPA can change the limit on running pods. |
-
-## Known bugs
-
-Radar gets these wrong: a pull request that changes nothing, or a refusal of a setup it should handle. These are bugs, not limits we accept.
-
-| Case | Pattern | How common | Why |
-|---|---|---|---|
-| [36-source-app](36-source-app/case.yaml) | Namespaced application source override | Occasional | Known bug, confirmed live. For an Application outside the argocd namespace, Argo CD reads `.argocd-source-<namespace>_<app>.yaml`. Radar doesn't look for that name, so it edits values.yaml, which the source file overrides. After merge the pods still run 64Mi. |
-| [39-oci-values-ref](39-oci-values-ref/case.yaml) | OCI chart and Git values | Occasional | Known bug. Radar can't fetch a public chart from a registry that hands out anonymous tokens (ghcr.io, Docker Hub), so it refuses a setup Argo CD deploys fine. |
 
 ## Not supported
 
@@ -89,19 +81,20 @@ Radar refuses and says why. No pull request is opened. This is on purpose: Radar
 | [31-values-object](31-values-object/case.yaml) | Inline valuesObject | Common | The limit is set in the Application's `helm.valuesObject`. Change it in the Application. |
 | [32-helm-parameter](32-helm-parameter/case.yaml) | Helm parameter override | Common | The limit is a Helm parameter in the Application. Change it in the Application. |
 | [35-source-default](35-source-default/case.yaml) | Repository source override | Occasional | A `.argocd-source.yaml` file sets the limit as a parameter. Radar finds it and says to change it there. |
+| [36-source-app](36-source-app/case.yaml) | Namespaced application source override | Occasional | The limit is set by a parameter in `.argocd-source-<namespace>_<app>.yaml`, the per-app file Argo CD reads for an Application outside the argocd namespace. Radar finds it, refuses, and says to change it in that file. |
 | [40-chart-range](40-chart-range/case.yaml) | Chart version range | Occasional | The chart version is a range. Radar can't resolve it the way Argo CD does, so it can't be sure which chart is live. |
 | [44-inline-merge](44-inline-merge/case.yaml) | Inline strategic merge patch | Occasional | The patch is written inline in kustomization.yaml. Radar won't rewrite an inline patch block. |
 | [45-inline-json](45-inline-json/case.yaml) | Inline JSON6902 patch | Occasional | The JSON6902 operation is inline in kustomization.yaml. Radar won't rewrite it. |
 | [48-config-replacement](48-config-replacement/case.yaml) | ConfigMap field replacement | Occasional | A Kustomize replacement copies the limit from a ConfigMap. Radar doesn't edit through replacements. |
 | [49-generated-memory](49-generated-memory/case.yaml) | Generated ConfigMap replacement | Occasional | The limit comes from a generated ConfigMap through a replacement. Radar doesn't edit generator inputs. |
 | [50-remote-base](50-remote-base/case.yaml) | Pinned remote Kustomize base | Occasional | The base is in another Git repo. Radar doesn't fetch remote Kustomize bases. |
-| [51-helm-in-kustomize](51-helm-in-kustomize/case.yaml) | Vendored Helm chart in Kustomize | Occasional | Kustomize inflates a Helm chart (`helmCharts`). Radar doesn't support that, even when the chart is in the repo. Today its message wrongly says the chart is fetched from outside (bug in the message). |
+| [51-helm-in-kustomize](51-helm-in-kustomize/case.yaml) | Vendored Helm chart in Kustomize | Occasional | Kustomize inflates a Helm chart (`helmCharts`). Radar refuses and says it doesn't render that yet, even when the chart is in the repo. |
 | [52-jsonnet-app](52-jsonnet-app/case.yaml) | Jsonnet source | Occasional | Jsonnet code builds the Deployment. Radar doesn't edit Jsonnet. |
 | [53-plugin-render](53-plugin-render/case.yaml) | Config management plugin | Occasional | A config management plugin builds the manifests. Radar can't run it. |
 | [57-application-patch](57-application-patch/case.yaml) | Application inline Kustomize patch | Occasional | A Kustomize patch inside the Application sets the limit. Change it in the Application. |
 | [58-build-annotation](58-build-annotation/case.yaml) | Build environment in annotation | Occasional | The Application's Kustomize options use a build variable Radar can't fill in, so it can't reproduce the render. |
 | [59-custom-kustomize](59-custom-kustomize/case.yaml) | Application selects a Kustomize version | Occasional | The Application uses an admin-registered Kustomize version Radar can't run. |
-| [61-git-range](61-git-range/case.yaml) | Git semver range and app tag prefix | Occasional | The Application follows a semver range of tags, so a PR into a branch won't deploy. Radar can't follow tag ranges. Today it shows a raw error instead of saying this (bug in the message). |
+| [61-git-range](61-git-range/case.yaml) | Git semver range and app tag prefix | Occasional | The Application deploys the newest tag that matches a range, so a PR into a branch won't reach it. Radar refuses and says so. |
 | [63-pr-preview](63-pr-preview/case.yaml) | Pull-request preview at its head commit | Occasional | A PR preview app is pinned to the PR's head commit. A new PR wouldn't change it. |
 
 ## Not verified yet

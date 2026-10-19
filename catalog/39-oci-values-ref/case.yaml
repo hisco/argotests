@@ -14,8 +14,8 @@ prevalence:
   caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
     rate.
 memory_set_by: catalog/39-oci-values-ref/envs/prod/values.yaml at resources.limits.memory
-support: bug
-support_why: "Known bug. Radar can't fetch a public chart from a registry that hands out anonymous tokens (ghcr.io, Docker Hub), so it refuses a setup Argo CD deploys fine."
+support: full
+support_why: "The chart comes from a public OCI registry (ghcr.io) and values from Git. Edits the Git value file. Checked live: the change reached 128Mi."
 expected: supported
 expected_edit:
   file: catalog/39-oci-values-ref/envs/prod/values.yaml
