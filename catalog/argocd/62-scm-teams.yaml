@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cat-62-scm-teams
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+  - missingkey=error
+  generators:
+  - scmProvider:
+      cloneProtocol: https
+      github:
+        organization: argoproj
+        allBranches: false
+      filters:
+      - repositoryMatch: ^argo-cd$
+  template:
+    metadata:
+      name: cat-62-{{.repository}}
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: main
+        path: catalog/62-scm-teams/apps/{{.repository}}
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: cat-62
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

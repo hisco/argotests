@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: inline-merge
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/44-inline-merge/apps/checkout/envs/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-44
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

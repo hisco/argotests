@@ -1,0 +1,8 @@
+apiVersion: v2
+name: checkout
+version: 1.0.0
+type: application
+dependencies:
+- name: platform
+  version: 1.0.0
+  repository: file://charts/platform

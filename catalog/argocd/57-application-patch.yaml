@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: application-patch
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/57-application-patch/apps/checkout
+    kustomize:
+      patches:
+      - target:
+          kind: Deployment
+          name: application-patch
+        patch: |
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: application-patch
+            namespace: cat-57
+          spec:
+            template:
+              spec:
+                containers:
+                - name: podinfo
+                  resources:
+                    limits:
+                      memory: 64Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-57
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

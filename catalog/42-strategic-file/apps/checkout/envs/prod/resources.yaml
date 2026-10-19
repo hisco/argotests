@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: strategic-file
+  namespace: cat-42
+spec:
+  template:
+    spec:
+      containers:
+      - name: podinfo
+        resources:
+          limits:
+            memory: 64Mi

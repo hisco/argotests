@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: set-directories
+  namespace: cat-11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: set-directories
+  template:
+    metadata:
+      labels:
+        app: set-directories
+    spec:
+      containers:
+      - name: podinfo
+        image: ghcr.io/stefanprodan/podinfo:6.7.1
+        command:
+        - ./podinfo
+        ports:
+        - name: http
+          containerPort: 9898
+        resources:
+          requests:
+            memory: 16Mi
+          limits:
+            memory: 64Mi

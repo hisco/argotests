@@ -1,0 +1,27 @@
+id: 60-identity-options
+title: Application changes namespace and name
+pattern: An Application overrides the Kustomize namespace and name prefix.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/
+- https://argo-cd.readthedocs.io/en/stable/user-guide/application-specification/
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/60-identity-options/apps/checkout/deployment.yaml: source
+  Deployment options container podinfo resources.limits.memory; Application transforms
+  identity.'
+expected: supported
+notes: []
+render_check:
+  command: python3 catalog/60-identity-options/render.py
+  result: 'Passed: exactly one Deployment named identity-options in cat-60; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_edit:
+  file: catalog/60-identity-options/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

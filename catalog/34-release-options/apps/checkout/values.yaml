@@ -1,0 +1,6 @@
+resources:
+  requests:
+    memory: 16Mi
+  limits:
+    memory: 64Mi
+fullnameOverride: release-options

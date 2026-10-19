@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: plugin-render
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/53-plugin-render/apps/checkout
+    plugin:
+      name: checkout-render-v1
+      env:
+      - name: MEMORY_LIMIT
+        value: 64Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-53
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

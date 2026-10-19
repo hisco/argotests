@@ -1,0 +1,37 @@
+id: 12-set-files
+title: ApplicationSet environment files
+pattern: An ApplicationSet reads per-environment files to choose workload paths.
+dimensions:
+- application-creation
+- environment
+sources:
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Git/
+- https://github.com/argoproj/argocd-example-apps
+prevalence:
+  level: common
+  evidence: Official Git file generator and example app coverage. These labels are qualitative, not measured
+    adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/12-set-files/envs/prod/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+- generated-application.yaml is derived sample output for inspection, not another Application to install.
+  The render check validates its workload source; no ApplicationSet controller was run.
+render_check:
+  command: cat catalog/12-set-files/envs/prod/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment set-files in cat-12
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/12-set-files/envs/prod/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

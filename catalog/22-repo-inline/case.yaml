@@ -1,0 +1,36 @@
+id: 22-repo-inline
+title: Remote chart with inline values
+pattern: An Application installs a Helm-repository chart with values stored in its own spec.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/helm/
+- https://raw.githubusercontent.com/stefanprodan/podinfo/6.7.1/charts/podinfo/templates/deployment.yaml
+prevalence:
+  level: common
+  evidence: Argo CD documents both remote charts and inline values.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/argocd/22-repo-inline.yaml at spec.source.helm.values
+expected: not-supported
+expected_edit: null
+expected_reason:
+  code: generated-source
+  message: 'Radar can''t edit this source: the chart comes from a Helm repository and the Application
+    takes no value file from Git.'
+  detail: the chart comes from a Helm repository and the Application takes no value file from Git
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+render_check:
+  command: helm template repo-inline podinfo --repo https://stefanprodan.github.io/podinfo --version 6.7.1
+    --namespace cat-22 --set fullnameOverride=repo-inline --set replicaCount=1 --set resources.requests.memory=16Mi
+    --set resources.limits.memory=64Mi
+  tool: Helm 4.3.0
+  result: passed
+  deployment: repo-inline
+  namespace: cat-22
+  memory_request: 16Mi
+  memory_limit: 64Mi
+  namespace_assignment: Argo CD destination namespace

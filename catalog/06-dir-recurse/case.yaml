@@ -1,0 +1,34 @@
+id: 06-dir-recurse
+title: Recursive plain manifests
+pattern: An Application recursively loads plain manifests from nested application directories.
+dimensions:
+- source-type
+- render-overrides
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/directory/
+prevalence:
+  level: common
+  evidence: Directory recursion is an official source option; plain YAML appears in the example apps.
+    These labels are qualitative, not measured adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/06-dir-recurse/envs/prod/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+render_check:
+  command: cat catalog/06-dir-recurse/envs/prod/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment dir-recurse in cat-06
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/06-dir-recurse/envs/prod/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

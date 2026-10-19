@@ -1,0 +1,47 @@
+id: 63-pr-preview
+title: Pull-request preview at its head commit
+pattern: A pull-request generator creates a preview Application pinned to the pull request head commit.
+dimensions:
+- application-creation
+- revision
+- environment
+sources:
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Pull-Request/
+- https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
+prevalence:
+  level: occasional
+  evidence: Argo CD documents head_sha in both Helm and Kustomize preview examples. Pull-request previews
+    are a documented pattern; no adoption count was found.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/63-pr-preview/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: not-supported
+notes:
+- Baseline prediction assumes a readable synced live Application and Deployment, connected writable GitHub
+  identity, and no external memory controller. Requested change is 64Mi to 128Mi.
+- 'Setup prerequisite: exactly one open pull request containing this fixture must carry the preview label.
+  No pull request or label was created. Anonymous public discovery is supported but rate limited.'
+- The derived sample uses actual historical pull request 31 and its observed head ccd38e69ad8de3a0d8b273e41bf996a7e44331f3.
+  It does not claim that this PR is open, labelled preview, or contains the catalog. Replace the sample
+  input after publication for a live run.
+- The old sample commit predates the catalog and cannot deploy this path. Its real SHA can still resolve,
+  so Radar returns pinned-revision before source lookup. For a live preview, the same refusal applies
+  to a real PR head containing the fixture.
+- generated-application.yaml is derived output for inspection outside the workload source. Do not install
+  it separately.
+render_check:
+  command: cat catalog/63-pr-preview/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment pr-preview in cat-63
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload YAML. No ApplicationSet controller or remote Argo CD sync was run.
+expected_reason:
+  code: pinned-revision
+  message: cat-63-preview-31 deploys Git version ccd38e69ad8de3a0d8b273e41bf996a7e44331f3. A pull request
+    reaches it only when cat-63-preview-31 moves to a newer Git version.

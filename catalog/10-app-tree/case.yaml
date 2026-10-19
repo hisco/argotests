@@ -1,0 +1,36 @@
+id: 10-app-tree
+title: App of apps
+pattern: A parent Application deploys a child Application that owns the workload.
+dimensions:
+- application-creation
+sources:
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/
+- https://github.com/argoproj/argocd-example-apps
+prevalence:
+  level: common
+  evidence: The official bootstrapping guide and example apps show app of apps. These labels are qualitative,
+    not measured adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/10-app-tree/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+- Install the parent Application. The child Application in bootstrap/checkout.yaml owns the Deployment.
+  Radar should edit the workload manifest through that child, not edit the parent.
+render_check:
+  command: cat catalog/10-app-tree/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment app-tree in cat-10
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/10-app-tree/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

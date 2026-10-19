@@ -1,0 +1,627 @@
+{
+  "scope": "Local rendering. No live Argo CD, admission, or controller reconciliation was run.",
+  "results": [
+    {
+      "case": "01-mono-envs",
+      "command": "kustomize build catalog/01-mono-envs/envs/prod",
+      "status": "passed",
+      "deployment": "mono-envs",
+      "namespace": "cat-01",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "02-app-repo",
+      "command": "cat catalog/02-app-repo/deploy/manifests/deployment.yaml",
+      "status": "passed",
+      "deployment": "app-repo",
+      "namespace": "cat-02",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "03-env-repo",
+      "command": "cat catalog/03-env-repo/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "env-repo",
+      "namespace": "cat-03",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "04-config-repo",
+      "command": "cat catalog/04-config-repo/clusters/production/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "config-repo",
+      "namespace": "cat-04",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "05-env-branch",
+      "command": "cat catalog/05-env-branch/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "env-branch",
+      "namespace": "cat-05",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "06-dir-recurse",
+      "command": "cat catalog/06-dir-recurse/envs/prod/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "dir-recurse",
+      "namespace": "cat-06",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "07-dir-filters",
+      "command": "cat catalog/07-dir-filters/envs/prod/manifests/deployment.yaml",
+      "status": "passed",
+      "deployment": "dir-filters",
+      "namespace": "cat-07",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "08-yaml-anchor",
+      "command": "cat catalog/08-yaml-anchor/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "yaml-anchor",
+      "namespace": "cat-08",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "09-multi-doc",
+      "command": "cat catalog/09-multi-doc/apps/checkout/release.yaml",
+      "status": "passed",
+      "deployment": "multi-doc",
+      "namespace": "cat-09",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "10-app-tree",
+      "command": "cat catalog/10-app-tree/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "app-tree",
+      "namespace": "cat-10",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "11-set-directories",
+      "command": "cat catalog/11-set-directories/envs/prod/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "set-directories",
+      "namespace": "cat-11",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "12-set-files",
+      "command": "cat catalog/12-set-files/envs/prod/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "set-files",
+      "namespace": "cat-12",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "13-set-list",
+      "command": "cat catalog/13-set-list/envs/prod/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "set-list",
+      "namespace": "cat-13",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "14-set-clusters",
+      "command": "cat catalog/14-set-clusters/envs/prod/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "set-clusters",
+      "namespace": "cat-14",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "15-set-matrix",
+      "command": "cat catalog/15-set-matrix/envs/prod/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "set-matrix",
+      "namespace": "cat-15",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "16-set-merge",
+      "command": "cat catalog/16-set-merge/envs/prod/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "set-merge",
+      "namespace": "cat-16",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "17-team-app",
+      "command": "cat catalog/17-team-app/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "team-app",
+      "namespace": "cat-17",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "18-release-tag",
+      "command": "cat catalog/18-release-tag/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "release-tag",
+      "namespace": "cat-18",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "19-commit-pin",
+      "command": "cat catalog/19-commit-pin/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "commit-pin",
+      "namespace": "cat-19",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "20-git-sources",
+      "command": "python3 catalog/20-git-sources/render.py",
+      "status": "passed",
+      "deployment": "git-sources",
+      "namespace": "cat-20",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "21-helm-flat",
+      "command": "helm template helm-flat catalog/21-helm-flat/apps/checkout --namespace cat-21",
+      "status": "passed",
+      "deployment": "helm-flat",
+      "namespace": "cat-21",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "22-repo-inline",
+      "command": "helm template repo-inline podinfo --repo https://stefanprodan.github.io/podinfo --version 6.7.1 --namespace cat-22 --set fullnameOverride=repo-inline --set replicaCount=1 --set resources.requests.memory=16Mi --set resources.limits.memory=64Mi",
+      "status": "passed",
+      "deployment": "repo-inline",
+      "namespace": "cat-22",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "23-umbrella",
+      "command": "helm template umbrella catalog/23-umbrella/apps/checkout --namespace cat-23",
+      "status": "passed",
+      "deployment": "umbrella",
+      "namespace": "cat-23",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "24-library-chart",
+      "command": "helm template library-chart catalog/24-library-chart/apps/checkout --namespace cat-24",
+      "status": "passed",
+      "deployment": "library-chart",
+      "namespace": "cat-24",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "25-global-values",
+      "command": "helm template global-values catalog/25-global-values/apps/checkout --namespace cat-25",
+      "status": "passed",
+      "deployment": "global-values",
+      "namespace": "cat-25",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "26-container-list",
+      "command": "helm template container-list catalog/26-container-list/apps/checkout --namespace cat-26",
+      "status": "passed",
+      "deployment": "container-list",
+      "namespace": "cat-26",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "27-resources-yaml",
+      "command": "helm template resources-yaml catalog/27-resources-yaml/apps/checkout --namespace cat-27",
+      "status": "passed",
+      "deployment": "resources-yaml",
+      "namespace": "cat-27",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "28-resources-tpl",
+      "command": "helm template resources-tpl catalog/28-resources-tpl/apps/checkout --namespace cat-28",
+      "status": "passed",
+      "deployment": "resources-tpl",
+      "namespace": "cat-28",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "29-values-layers",
+      "command": "helm template values-layers catalog/29-values-layers/apps/checkout --namespace cat-29 --values catalog/29-values-layers/envs/prod/00-common.yaml --values catalog/29-values-layers/envs/prod/10-production.yaml --values catalog/29-values-layers/clusters/eu-west/values.yaml",
+      "status": "passed",
+      "deployment": "values-layers",
+      "namespace": "cat-29",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "30-inline-values",
+      "command": "helm template inline-values catalog/30-inline-values/apps/checkout --namespace cat-30 --set resources.limits.memory=64Mi",
+      "status": "passed",
+      "deployment": "inline-values",
+      "namespace": "cat-30",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "31-values-object",
+      "command": "helm template values-object catalog/31-values-object/apps/checkout --namespace cat-31 --set resources.limits.memory=64Mi",
+      "status": "passed",
+      "deployment": "values-object",
+      "namespace": "cat-31",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "32-helm-parameter",
+      "command": "helm template helm-parameter catalog/32-helm-parameter/apps/checkout --namespace cat-32 --set resources.limits.memory=64Mi",
+      "status": "passed",
+      "deployment": "helm-parameter",
+      "namespace": "cat-32",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "33-optional-values",
+      "command": "helm template optional-values catalog/33-optional-values/apps/checkout --namespace cat-33 --values catalog/33-optional-values/envs/prod/values.yaml",
+      "status": "passed",
+      "deployment": "optional-values",
+      "namespace": "cat-33",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "34-release-options",
+      "command": "helm template checkout-production catalog/34-release-options/apps/checkout --namespace cat-34 --skip-crds",
+      "status": "passed",
+      "deployment": "release-options",
+      "namespace": "cat-34",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "35-source-default",
+      "command": "helm template source-default catalog/35-source-default/apps/checkout --namespace cat-35 --set resources.limits.memory=64Mi",
+      "status": "passed",
+      "deployment": "source-default",
+      "namespace": "cat-35",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "36-source-app",
+      "command": "helm template source-app catalog/36-source-app/apps/checkout --namespace cat-36 --set resources.limits.memory=64Mi",
+      "status": "passed",
+      "deployment": "source-app",
+      "namespace": "cat-36",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "37-build-env-values",
+      "command": "helm template build-env-values catalog/37-build-env-values/apps/checkout --namespace cat-37 --values catalog/37-build-env-values/apps/checkout/envs/build-env-values.yaml",
+      "status": "passed",
+      "deployment": "build-env-values",
+      "namespace": "cat-37",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "38-chart-values-ref",
+      "command": "helm template chart-values-ref podinfo --repo https://stefanprodan.github.io/podinfo --version 6.7.1 --namespace cat-38 --values catalog/38-chart-values-ref/envs/prod/values.yaml",
+      "status": "passed",
+      "deployment": "chart-values-ref",
+      "namespace": "cat-38",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "39-oci-values-ref",
+      "command": "helm template oci-values-ref oci://ghcr.io/stefanprodan/charts/podinfo --version 6.7.1 --namespace cat-39 --values catalog/39-oci-values-ref/envs/prod/values.yaml",
+      "status": "passed",
+      "deployment": "oci-values-ref",
+      "namespace": "cat-39",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "40-chart-range",
+      "command": "helm template chart-range podinfo --repo https://stefanprodan.github.io/podinfo --version '6.7.*' --namespace cat-40 --values catalog/40-chart-range/envs/prod/values.yaml",
+      "status": "passed",
+      "deployment": "chart-range",
+      "namespace": "cat-40",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "41-base-overlay",
+      "command": "kustomize build catalog/41-base-overlay/apps/checkout/envs/prod",
+      "status": "passed",
+      "deployment": "base-overlay",
+      "namespace": "cat-41",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "42-strategic-file",
+      "command": "kustomize build catalog/42-strategic-file/apps/checkout/envs/prod",
+      "status": "passed",
+      "deployment": "strategic-file",
+      "namespace": "cat-42",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "43-json-file",
+      "command": "kustomize build catalog/43-json-file/apps/checkout/envs/prod",
+      "status": "passed",
+      "deployment": "json-file",
+      "namespace": "cat-43",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "44-inline-merge",
+      "command": "kustomize build catalog/44-inline-merge/apps/checkout/envs/prod",
+      "status": "passed",
+      "deployment": "inline-merge",
+      "namespace": "cat-44",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "45-inline-json",
+      "command": "kustomize build catalog/45-inline-json/apps/checkout/envs/prod",
+      "status": "passed",
+      "deployment": "inline-json",
+      "namespace": "cat-45",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "46-label-patch",
+      "command": "kustomize build catalog/46-label-patch/apps/checkout/envs/prod",
+      "status": "passed",
+      "deployment": "label-patch",
+      "namespace": "cat-46",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "47-resource-component",
+      "command": "kustomize build catalog/47-resource-component/apps/checkout/envs/prod",
+      "status": "passed",
+      "deployment": "resource-component",
+      "namespace": "cat-47",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "48-config-replacement",
+      "command": "kustomize build catalog/48-config-replacement/apps/checkout",
+      "status": "passed",
+      "deployment": "config-replacement",
+      "namespace": "cat-48",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "49-generated-memory",
+      "command": "kustomize build catalog/49-generated-memory/apps/checkout",
+      "status": "passed",
+      "deployment": "generated-memory",
+      "namespace": "cat-49",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "50-remote-base",
+      "command": "kustomize build catalog/50-remote-base/apps/checkout",
+      "status": "passed",
+      "deployment": "remote-base",
+      "namespace": "cat-50",
+      "container": "podinfod",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "51-helm-in-kustomize",
+      "command": "kustomize build --enable-helm --helm-command helm3 catalog/51-helm-in-kustomize/apps/checkout",
+      "status": "passed",
+      "deployment": "helm-in-kustomize",
+      "namespace": "cat-51",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "52-jsonnet-app",
+      "command": "jsonnet --ext-str memory=64Mi catalog/52-jsonnet-app/apps/checkout/deployment.jsonnet",
+      "status": "passed",
+      "deployment": "jsonnet-app",
+      "namespace": "cat-52",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "53-plugin-render",
+      "command": "(cd catalog/53-plugin-render/apps/checkout && ARGOCD_ENV_MEMORY_LIMIT=64Mi sh render.sh)",
+      "status": "passed",
+      "deployment": "plugin-render",
+      "namespace": "cat-53",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "54-namespace-default",
+      "command": "kustomize build catalog/54-namespace-default/apps/checkout",
+      "status": "runtime-exception",
+      "observation": "Deployment omits the limit. LimitRange supplies 64Mi to admitted Pods."
+    },
+    {
+      "case": "55-vertical-policy",
+      "command": "kustomize build catalog/55-vertical-policy/apps/checkout",
+      "status": "passed",
+      "deployment": "vertical-policy",
+      "namespace": "cat-55",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "56-operator-service",
+      "command": "kustomize build catalog/56-operator-service/apps/checkout",
+      "status": "runtime-exception",
+      "observation": "Knative Service sets 64Mi. Its controller creates the Deployment at runtime."
+    },
+    {
+      "case": "57-application-patch",
+      "command": "python3 catalog/57-application-patch/render.py",
+      "status": "passed",
+      "deployment": "application-patch",
+      "namespace": "cat-57",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "58-build-annotation",
+      "command": "python3 catalog/58-build-annotation/render.py",
+      "status": "passed",
+      "deployment": "build-annotation",
+      "namespace": "cat-58",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "59-custom-kustomize",
+      "command": "kustomize build catalog/59-custom-kustomize/apps/checkout",
+      "status": "passed",
+      "deployment": "custom-kustomize",
+      "namespace": "cat-59",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "60-identity-options",
+      "command": "python3 catalog/60-identity-options/render.py",
+      "status": "passed",
+      "deployment": "identity-options",
+      "namespace": "cat-60",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "61-git-range",
+      "command": "cat catalog/61-git-range/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "git-range",
+      "namespace": "cat-61",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "62-scm-teams",
+      "command": "cat catalog/62-scm-teams/apps/argo-cd/deployment.yaml",
+      "status": "passed",
+      "deployment": "scm-teams",
+      "namespace": "cat-62",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    },
+    {
+      "case": "63-pr-preview",
+      "command": "cat catalog/63-pr-preview/apps/checkout/deployment.yaml",
+      "status": "passed",
+      "deployment": "pr-preview",
+      "namespace": "cat-63",
+      "container": "podinfo",
+      "memory_request": "16Mi",
+      "memory_limit": "64Mi"
+    }
+  ]
+}

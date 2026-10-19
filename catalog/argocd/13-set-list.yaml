@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cat-13-set-list
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+  - missingkey=error
+  generators:
+  - list:
+      elements:
+      - environment: prod
+        appPath: catalog/13-set-list/envs/prod/apps/checkout
+  template:
+    metadata:
+      name: cat-13-set-list
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: main
+        path: '{{.appPath}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: cat-13
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

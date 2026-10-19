@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: identity-options
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/60-identity-options/apps/checkout
+    kustomize:
+      namespace: cat-60
+      namePrefix: identity-
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-60
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

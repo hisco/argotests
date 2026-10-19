@@ -1,0 +1,35 @@
+id: 29-values-layers
+title: Environment and cluster value layers
+pattern: An Application layers chart defaults, glob-selected production values, and cluster-specific values.
+dimensions:
+- environment
+- memory-location
+sources:
+- https://octopus.com/blog/helm-values-argocd
+- https://argo-cd.readthedocs.io/en/stable/user-guide/helm/
+prevalence:
+  level: common
+  evidence: Kostis publishes environment and region hierarchies with runnable examples.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/29-values-layers/clusters/eu-west/values.yaml at resources.limits.memory
+expected: supported
+expected_edit:
+  file: catalog/29-values-layers/clusters/eu-west/values.yaml
+  key: resources.limits.memory
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+- Argo CD 3.4 or newer expands the production glob in lexical order. The explicit cluster file wins last.
+render_check:
+  command: helm template values-layers catalog/29-values-layers/apps/checkout --namespace cat-29 --values
+    catalog/29-values-layers/envs/prod/00-common.yaml --values catalog/29-values-layers/envs/prod/10-production.yaml
+    --values catalog/29-values-layers/clusters/eu-west/values.yaml
+  tool: Helm 4.3.0
+  result: passed
+  deployment: values-layers
+  namespace: cat-29
+  memory_request: 16Mi
+  memory_limit: 64Mi
+  argo_expansion: ../../envs/prod/*.yaml expands to 00-common.yaml then 10-production.yaml.

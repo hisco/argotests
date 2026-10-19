@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cat-11-set-directories
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+  - missingkey=error
+  generators:
+  - git:
+      repoURL: https://github.com/hisco/argotests.git
+      revision: main
+      directories:
+      - path: catalog/11-set-directories/envs/*
+  template:
+    metadata:
+      name: cat-11-set-directories
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: main
+        path: '{{.path.path}}/apps/checkout'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: cat-11
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

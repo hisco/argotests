@@ -1,0 +1,28 @@
+id: 46-label-patch
+title: Patch target by label selector
+pattern: A shared patch selects Deployments by a label rather than a resource name.
+dimensions:
+- source-type
+- memory-location
+- environment-differences
+- repo-layout
+sources:
+- https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patches/
+- https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+prevalence:
+  level: occasional
+  evidence: Kustomize patches supports labelSelector targets. This is useful for applying
+    an organization policy to a class of workloads.
+memory_set_by: 'catalog/46-label-patch/apps/checkout/envs/prod/resources.yaml: JSON6902
+  memory operation selected by label'
+expected: supported
+notes: []
+render_check:
+  command: kustomize build catalog/46-label-patch/apps/checkout/envs/prod
+  result: 'Passed: exactly one Deployment named label-patch in cat-46; podinfo image
+    6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_edit:
+  file: catalog/46-label-patch/apps/checkout/envs/prod/resources.yaml
+  key: '[path=/spec/template/spec/containers/0/resources/limits/memory].value'

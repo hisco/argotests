@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jsonnet-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/52-jsonnet-app/apps/checkout
+    directory:
+      jsonnet:
+        extVars:
+        - name: memory
+          value: 64Mi
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-52
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

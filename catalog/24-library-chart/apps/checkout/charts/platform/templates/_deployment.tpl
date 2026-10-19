@@ -1,0 +1,28 @@
+{{- define "platform.deployment" -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fullnameOverride | default .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.fullnameOverride | default .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fullnameOverride | default .Release.Name }}
+    spec:
+      containers:
+        - name: podinfo
+          image: ghcr.io/stefanprodan/podinfo:6.7.1
+          command: [./podinfo]
+          ports:
+            - containerPort: 9898
+          resources:
+            requests:
+              memory: 16Mi
+            limits:
+              memory: {{ .Values.resources.limits.memory | quote }}
+{{- end -}}

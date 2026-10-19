@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: values-layers
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/29-values-layers/apps/checkout
+    helm:
+      valueFiles:
+      - ../../envs/prod/*.yaml
+      - ../../clusters/eu-west/values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-29
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

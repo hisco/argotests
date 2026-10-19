@@ -1,0 +1,35 @@
+id: 04-config-repo
+title: Configuration separated from application code
+pattern: A configuration repository stores deployment manifests while the image is built elsewhere.
+dimensions:
+- repo-layout
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/best_practices/
+prevalence:
+  level: common
+  evidence: Argo CD recommends separating configuration and source repositories. These labels are qualitative,
+    not measured adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/04-config-repo/clusters/production/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+- Only deployment configuration is needed here. The podinfo image comes from its public upstream source
+  repository; no application source is copied into this fixture.
+render_check:
+  command: cat catalog/04-config-repo/clusters/production/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment config-repo in cat-04
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/04-config-repo/clusters/production/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

@@ -1,0 +1,29 @@
+id: 25-global-values
+title: Global chart values
+pattern: A chart reads a shared memory setting from global values.
+dimensions:
+- memory-location
+sources:
+- https://helm.sh/docs/chart_template_guide/subcharts_and_globals/
+prevalence:
+  level: occasional
+  evidence: Helm documents globals for sharing settings across charts.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/25-global-values/apps/checkout/values.yaml at global.memoryLimit
+expected: supported
+expected_edit:
+  file: catalog/25-global-values/apps/checkout/values.yaml
+  key: global.memoryLimit
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+render_check:
+  command: helm template global-values catalog/25-global-values/apps/checkout --namespace cat-25
+  tool: Helm 4.3.0
+  result: passed
+  deployment: global-values
+  namespace: cat-25
+  memory_request: 16Mi
+  memory_limit: 64Mi

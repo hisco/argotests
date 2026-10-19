@@ -1,0 +1,40 @@
+id: 18-release-tag
+title: Release tag pin
+pattern: An Application deploys an immutable release tag instead of following a branch.
+dimensions:
+- revision
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
+prevalence:
+  level: common
+  evidence: Argo CD documents tags as production version pins. These labels are qualitative, not measured
+    adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/18-release-tag/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: not-supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+- The existing upstream v1 tag resolves to commit 87574024b437e74fcec2c66dba5c1eea16aae82d, which predates
+  this catalog. After publication, create a new release tag containing the fixture and repoint this Application
+  before expecting a workload.
+- No commit, tag, or branch is created here. The configured existing ref resolves, so Radar can return
+  pinned-revision before reading the source path. Argo CD cannot deploy this new catalog path from the
+  old ref. Local YAML verification does not prove remote Argo CD deployment.
+render_check:
+  command: cat catalog/18-release-tag/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment release-tag in cat-18
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_reason:
+  code: pinned-revision
+  message: cat-18-release-tag deploys Git version v1. A pull request reaches it only when cat-18-release-tag
+    moves to a newer Git version.

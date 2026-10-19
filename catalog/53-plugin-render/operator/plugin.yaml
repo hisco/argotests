@@ -1,0 +1,10 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ConfigManagementPlugin
+metadata:
+  name: checkout-render
+spec:
+  version: v1
+  generate:
+    command:
+    - sh
+    - render.sh

@@ -1,0 +1,30 @@
+id: 23-umbrella
+title: Umbrella chart
+pattern: A parent chart configures a vendored application subchart under its dependency name.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://helm.sh/docs/chart_template_guide/subcharts_and_globals/
+prevalence:
+  level: common
+  evidence: Subcharts and parent value overrides are standard Helm features.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/23-umbrella/apps/checkout/values.yaml at checkout.resources.limits.memory
+expected: supported
+expected_edit:
+  file: catalog/23-umbrella/apps/checkout/values.yaml
+  key: checkout.resources.limits.memory
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+render_check:
+  command: helm template umbrella catalog/23-umbrella/apps/checkout --namespace cat-23
+  tool: Helm 4.3.0
+  result: passed
+  deployment: umbrella
+  namespace: cat-23
+  memory_request: 16Mi
+  memory_limit: 64Mi

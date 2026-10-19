@@ -1,0 +1,30 @@
+id: 24-library-chart
+title: Shared library chart
+pattern: An application chart includes a Deployment helper from a vendored library chart.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://helm.sh/docs/topics/library_charts/
+prevalence:
+  level: occasional
+  evidence: Helm publishes a full library-chart example; no usage count is available.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/24-library-chart/apps/checkout/values.yaml at resources.limits.memory
+expected: supported
+expected_edit:
+  file: catalog/24-library-chart/apps/checkout/values.yaml
+  key: resources.limits.memory
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+render_check:
+  command: helm template library-chart catalog/24-library-chart/apps/checkout --namespace cat-24
+  tool: Helm 4.3.0
+  result: passed
+  deployment: library-chart
+  namespace: cat-24
+  memory_request: 16Mi
+  memory_limit: 64Mi

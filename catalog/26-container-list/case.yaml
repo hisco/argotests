@@ -1,0 +1,32 @@
+id: 26-container-list
+title: Values list per container
+pattern: A chart iterates over a list of containers and their resources.
+dimensions:
+- memory-location
+sources:
+- https://helm.sh/docs/chart_best_practices/values/
+prevalence:
+  level: occasional
+  evidence: Helm documents list-valued settings and their override limitations.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/26-container-list/apps/checkout/values.yaml at containers[0].resources.limits.memory
+expected: not-supported
+expected_edit: null
+expected_reason:
+  code: list-item
+  message: Radar found hisco/argotests but it's an item in a list Radar can't match by name, so it can't
+    pick one line.
+  detail: the values key containers[0].resources.limits.memory is an item in a list, and Helm replaces
+    whole lists
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+render_check:
+  command: helm template container-list catalog/26-container-list/apps/checkout --namespace cat-26
+  tool: Helm 4.3.0
+  result: passed
+  deployment: container-list
+  namespace: cat-26
+  memory_request: 16Mi
+  memory_limit: 64Mi

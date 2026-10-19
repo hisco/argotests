@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: helm-in-kustomize
+  namespace: cat-51
+  labels:
+    app.kubernetes.io/name: helm-in-kustomize
+    app.kubernetes.io/part-of: checkout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: helm-in-kustomize
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: helm-in-kustomize
+    spec:
+      containers:
+      - name: podinfo
+        image: ghcr.io/stefanprodan/podinfo:6.7.1
+        command:
+        - ./podinfo
+        ports:
+        - containerPort: 9898
+          name: http
+        resources:
+{{ toYaml .Values.resources | indent 10 }}

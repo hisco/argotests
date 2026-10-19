@@ -1,0 +1,47 @@
+id: 62-scm-teams
+title: Organization discovery with central configuration
+pattern: An ApplicationSet discovers organization repositories while deployment configuration stays in
+  one central repository.
+dimensions:
+- application-creation
+- repo-layout
+sources:
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-SCM-Provider/
+- https://argo-cd.readthedocs.io/en/stable/user-guide/best_practices/
+prevalence:
+  level: occasional
+  evidence: The SCM provider documentation describes organization discovery for many-repository microservices.
+    The central config source follows Argo CD guidance to separate configuration from source. No usage
+    count was found.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/62-scm-teams/apps/argo-cd/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+expected_edit:
+  file: catalog/62-scm-teams/apps/argo-cd/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+notes:
+- Baseline prediction assumes a readable synced live Application and Deployment, connected writable GitHub
+  identity, and no external memory controller. Requested change is 64Mi to 128Mi.
+- The public argoproj organization and argo-cd repository are real discovery inputs. Their code is not
+  deployed. The generated Application reads this catalog configuration from hisco/argotests. It runs podinfo
+  as the small stand-in workload.
+- Anonymous public GitHub organization discovery is supported but rate limited. Exactly one repository
+  matches the filter. No credentials or invented organization are present.
+- After the catalog is published, the source path can render. Full generator execution was not verified.
+  Support assumes Radar reads the generated Application and complete live ApplicationSet membership. Without
+  membership, unresolved SCM discovery is an opaque possible reader and can require scope confirmation.
+- generated-application.yaml is derived output for inspection outside the workload source. Do not install
+  it separately.
+render_check:
+  command: cat catalog/62-scm-teams/apps/argo-cd/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment scm-teams in cat-62
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload YAML. No ApplicationSet controller or remote Argo CD sync was run.

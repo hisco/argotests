@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: release-options
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/34-release-options/apps/checkout
+    helm:
+      releaseName: checkout-production
+      namespace: cat-34
+      skipCrds: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-34
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

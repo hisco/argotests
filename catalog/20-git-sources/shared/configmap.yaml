@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: checkout-settings
+  namespace: cat-20
+data:
+  LOG_LEVEL: info

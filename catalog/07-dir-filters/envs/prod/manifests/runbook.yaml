@@ -1,0 +1,7 @@
+# +argocd:skip-file-rendering
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: runbook-example
+data:
+  purpose: example only

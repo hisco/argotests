@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: env-branch
+  namespace: cat-05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: env-branch
+  template:
+    metadata:
+      labels:
+        app: env-branch
+    spec:
+      containers:
+      - name: podinfo
+        image: ghcr.io/stefanprodan/podinfo:6.7.1
+        command:
+        - ./podinfo
+        ports:
+        - name: http
+          containerPort: 9898
+        resources:
+          requests:
+            memory: 16Mi
+          limits:
+            memory: 64Mi

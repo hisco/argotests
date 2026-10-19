@@ -1,0 +1,30 @@
+id: 21-helm-flat
+title: Flat chart values
+pattern: A local Helm chart exposes a top-level memoryLimit setting.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://helm.sh/docs/chart_best_practices/values/
+prevalence:
+  level: common
+  evidence: Helm documents flat values as its preferred shape.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/21-helm-flat/apps/checkout/values.yaml at memoryLimit
+expected: supported
+expected_edit:
+  file: catalog/21-helm-flat/apps/checkout/values.yaml
+  key: memoryLimit
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+render_check:
+  command: helm template helm-flat catalog/21-helm-flat/apps/checkout --namespace cat-21
+  tool: Helm 4.3.0
+  result: passed
+  deployment: helm-flat
+  namespace: cat-21
+  memory_request: 16Mi
+  memory_limit: 64Mi

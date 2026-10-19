@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pr-preview
+  namespace: cat-63
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pr-preview
+  template:
+    metadata:
+      labels:
+        app: pr-preview
+    spec:
+      containers:
+      - name: podinfo
+        image: ghcr.io/stefanprodan/podinfo:6.7.1
+        command:
+        - ./podinfo
+        ports:
+        - name: http
+          containerPort: 9898
+        resources:
+          requests:
+            memory: 16Mi
+          limits:
+            memory: 64Mi

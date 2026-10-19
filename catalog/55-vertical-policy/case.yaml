@@ -1,0 +1,34 @@
+id: 55-vertical-policy
+title: VPA scales limits from the template ratio
+pattern: A VPA controls memory requests and scales Pod limits from the template request-to-limit
+  ratio.
+dimensions:
+- source-type
+- memory-location
+- autoscaling
+sources:
+- https://github.com/kubernetes/autoscaler/blob/master/vertical-pod-autoscaler/docs/quickstart.md
+- https://github.com/kubernetes/autoscaler/blob/master/vertical-pod-autoscaler/docs/api.md
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/55-vertical-policy/apps/checkout/deployment.yaml: spec.template.spec.containers[name=podinfo].resources.limits.memory'
+expected: supported
+notes:
+- 'Prerequisite: install the VPA CRD and controllers. The source template renders
+  64Mi, but the running Pod limit can differ as the VPA changes requests. Radar offers
+  the Git edit with vpa-scales and vpa-ratio warnings.'
+- The examples/absent-limit.yaml file is outside the Application path and is not deployed.
+  It records the separate missing-limit pattern. VPA does not guarantee a missing
+  limit becomes 64Mi. Offline rendering cannot prove admission values, and this file
+  intentionally has no memory limit.
+render_check:
+  command: kustomize build catalog/55-vertical-policy/apps/checkout
+  result: 'Passed: exactly one Deployment named vertical-policy in cat-55; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_edit:
+  file: catalog/55-vertical-policy/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

@@ -1,0 +1,32 @@
+id: 43-json-file
+title: JSON6902 patch file
+pattern: An environment uses a JSON6902 operation to replace one memory limit.
+dimensions:
+- source-type
+- memory-location
+- environment-differences
+- repo-layout
+sources:
+- https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+- https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesjson6902/
+prevalence:
+  level: common
+  evidence: Kubernetes documents JSON6902 alongside strategic merge patches. Kustomize
+    keeps a dedicated reference for the legacy field.
+memory_set_by: 'catalog/43-json-file/apps/checkout/envs/prod/resources.yaml: operation
+  with path /spec/template/spec/containers/0/resources/limits/memory'
+expected: supported
+notes: []
+render_check:
+  command: kustomize build catalog/43-json-file/apps/checkout/envs/prod
+  result: 'Passed: exactly one Deployment named json-file in cat-43; podinfo image
+    6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  warnings: '# Warning: ''patchesJson6902'' is deprecated. Please use ''patches''
+    instead. Run ''kustomize edit fix'' to update your Kustomization automatically.
+
+    '
+  tools:
+  - kustomize 5.6.0
+expected_edit:
+  file: catalog/43-json-file/apps/checkout/envs/prod/resources.yaml
+  key: '[path=/spec/template/spec/containers/0/resources/limits/memory].value'

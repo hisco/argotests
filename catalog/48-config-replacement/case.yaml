@@ -1,0 +1,33 @@
+id: 48-config-replacement
+title: ConfigMap field replacement
+pattern: A replacement copies a ConfigMap data field into a Deployment resource limit.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/replacements/
+- https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+prevalence:
+  level: occasional
+  evidence: Kubernetes documents replacements and configuration generators. Copying
+    a generated resource setting is an occasional composition of these features; no
+    adoption count was found.
+memory_set_by: 'catalog/48-config-replacement/apps/checkout/resources.yaml: ConfigMap
+  checkout-resources data.memory, copied by replacements'
+expected: not-supported
+notes:
+- The candidate list includes the Deployment origin, Kustomization files and patch
+  files. It does not include the replacement source ConfigMap or generator input.
+  Changing the Deployment scalar is overwritten by the replacement.
+render_check:
+  command: kustomize build catalog/48-config-replacement/apps/checkout
+  result: 'Passed: exactly one Deployment named config-replacement in cat-48; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_reason:
+  code: editor-refused
+  message: Git sets the memory limit, but no single file edit Radar can make changes
+    it
+  ui_message: 'Radar can''t change this from here: it''s in a multi-line block Radar
+    won''t rewrite safely.'

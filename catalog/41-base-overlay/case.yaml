@@ -1,0 +1,31 @@
+id: 41-base-overlay
+title: Base plus production overlay
+pattern: Environment overlays select a shared application base.
+dimensions:
+- source-type
+- memory-location
+- environment-differences
+- repo-layout
+sources:
+- https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+- https://github.com/argoproj/argocd-example-apps/tree/master/kustomize-guestbook
+- https://github.com/redhat-cop/gitops-catalog
+- https://raw.githubusercontent.com/redhat-cop/gitops-catalog/main/jenkins2/overlays/default/kustomization.yaml
+prevalence:
+  level: common
+  evidence: Kubernetes teaches bases and overlays. Argo CD maintains kustomize-guestbook.
+    The Red Hat Community of Practice GitOps catalog also organizes applications as
+    Kustomize bases and overlays.
+memory_set_by: 'catalog/41-base-overlay/apps/checkout/base/deployment.yaml: container
+  podinfo resources.limits.memory'
+expected: supported
+notes: []
+render_check:
+  command: kustomize build catalog/41-base-overlay/apps/checkout/envs/prod
+  result: 'Passed: exactly one Deployment named base-overlay in cat-41; podinfo image
+    6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_edit:
+  file: catalog/41-base-overlay/apps/checkout/base/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

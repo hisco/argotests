@@ -1,0 +1,39 @@
+id: 40-chart-range
+title: Chart version range
+pattern: An Application tracks a Helm chart semver range and reads values from Git.
+dimensions:
+- revision
+- several-sources
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
+- https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/
+- https://raw.githubusercontent.com/stefanprodan/podinfo/6.7.1/charts/podinfo/templates/deployment.yaml
+prevalence:
+  level: occasional
+  evidence: Argo CD documents semver chart tracking; no adoption count is available.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/40-chart-range/envs/prod/values.yaml at resources.limits.memory
+expected: not-supported
+expected_edit: null
+expected_reason:
+  code: generated-source
+  message: 'Radar can''t edit this source: the Application takes chart podinfo at "6.7.*", a version range
+    Radar can''t resolve the way Argo CD does yet.'
+  detail: the Application takes chart podinfo at "6.7.*", a version range Radar can't resolve the way
+    Argo CD does yet
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+- The chart range resolved to 6.7.1 during validation. A future Argo CD resolution may choose another
+  6.7 patch. The explicit image tag remains 6.7.1.
+render_check:
+  command: helm template chart-range podinfo --repo https://stefanprodan.github.io/podinfo --version '6.7.*'
+    --namespace cat-40 --values catalog/40-chart-range/envs/prod/values.yaml
+  tool: Helm 4.3.0
+  result: passed
+  deployment: chart-range
+  namespace: cat-40
+  memory_request: 16Mi
+  memory_limit: 64Mi
+  namespace_assignment: Argo CD destination namespace

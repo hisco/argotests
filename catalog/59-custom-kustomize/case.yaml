@@ -1,0 +1,29 @@
+id: 59-custom-kustomize
+title: Application selects a Kustomize version
+pattern: An Application selects an administrator-registered Kustomize binary version.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/59-custom-kustomize/apps/checkout/deployment.yaml: spec.template.spec.containers[name=podinfo].resources.limits.memory'
+expected: not-supported
+notes:
+- 'Prerequisite: the Argo CD administrator must register kustomize.path.v5.6.0. The
+  local kustomize binary is v5.6.0, so the recorded local render uses that version.
+  Radar refuses the explicit version even for a simple source.'
+render_check:
+  command: kustomize build catalog/59-custom-kustomize/apps/checkout
+  result: 'Passed: exactly one Deployment named custom-kustomize in cat-59; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_reason:
+  code: app-spec-values
+  message: the Application builds with kustomize v5.6.0, which Radar can't run
+  ui_message: 'Radar can''t change this from here: the value is in the Application''s
+    own spec, which Radar doesn''t change yet.'

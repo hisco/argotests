@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: base-overlay
+  namespace: cat-41
+  labels:
+    app.kubernetes.io/name: base-overlay
+    app.kubernetes.io/part-of: checkout
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: base-overlay
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: base-overlay
+    spec:
+      containers:
+      - name: podinfo
+        image: ghcr.io/stefanprodan/podinfo:6.7.1
+        command:
+        - ./podinfo
+        ports:
+        - containerPort: 9898
+          name: http
+        resources:
+          requests:
+            memory: 16Mi
+          limits:
+            memory: 64Mi

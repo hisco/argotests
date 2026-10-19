@@ -1,0 +1,38 @@
+id: 56-operator-service
+title: Operator owns the Deployment
+pattern: A Knative Service owns a generated Deployment rather than storing that Deployment
+  in Git.
+dimensions:
+- source-type
+- memory-location
+- operator-ownership
+sources:
+- https://knative.dev/docs/serving/services/creating-services/
+- https://knative.dev/docs/serving/architecture/
+- https://knative.dev/docs/serving/autoscaling/scale-bounds/
+prevalence:
+  level: occasional
+  evidence: Knative documents Service as its application API and controllers creating
+    Revisions and Deployments. This is occasional across GitOps generally and standard
+    within Knative.
+memory_set_by: 'catalog/56-operator-service/apps/checkout/service.yaml: Knative Service
+  spec.template.spec.containers[name=podinfo].resources.limits.memory'
+expected: unsure
+notes:
+- 'Intentional render exception: Git contains a Knative Service, not its generated
+  Deployment. Knative Serving must be installed. The controller chooses a revision-derived
+  Deployment name, adds its queue proxy and controls replica scaling. No fake short-id
+  Deployment is checked in.'
+- 'The result depends on the generated Deployment tracking metadata and Application
+  status, which do not exist offline. With no direct GitOps tracking, service.plan
+  returns route live, reason not-gitops, and the UI says: Git doesn''t set the memory
+  limit here, so a live change lasts. If the child is recorded as directly tracked
+  by this Application, the locator refuses owner-not-found because only a Knative
+  Service renders. Neither path locates the CR memory key for this generated Deployment.'
+render_check:
+  command: kustomize build catalog/56-operator-service/apps/checkout
+  result: 'Passed: Knative Service template has memory limit 64Mi. No Deployment is
+    rendered. Its controller-generated Deployment requires Knative Serving and cannot
+    be verified offline.'
+  tools:
+  - kustomize 5.6.0

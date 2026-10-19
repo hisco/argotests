@@ -1,0 +1,31 @@
+id: 58-build-annotation
+title: Build environment in annotation
+pattern: An Application substitutes an Argo CD build variable into common annotations.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/
+- https://argo-cd.readthedocs.io/en/stable/user-guide/build-environment/
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/58-build-annotation/apps/checkout/deployment.yaml: spec.template.spec.containers[name=podinfo].resources.limits.memory'
+expected: not-supported
+notes:
+- The annotation does not set memory. Radar refuses before rendering because it cannot
+  reproduce the build variable. The render script applies the documented ARGOCD_APP_NAME
+  substitution before building.
+render_check:
+  command: python3 catalog/58-build-annotation/render.py
+  result: 'Passed: exactly one Deployment named build-annotation in cat-58; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_reason:
+  code: app-spec-values
+  message: an annotation in the Application's kustomize options uses a build variable,
+    which Radar doesn't fill in yet
+  ui_message: 'Radar can''t change this from here: the value is in the Application''s
+    own spec, which Radar doesn''t change yet.'

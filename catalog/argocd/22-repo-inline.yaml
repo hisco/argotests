@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: repo-inline
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://stefanprodan.github.io/podinfo
+    chart: podinfo
+    targetRevision: 6.7.1
+    helm:
+      values: "fullnameOverride: repo-inline\nimage:\n  repository: ghcr.io/stefanprodan/podinfo\n  tag:\
+        \ 6.7.1\nreplicaCount: 1\nresources:\n  limits:\n    memory: 64Mi\n  requests:\n    memory: 16Mi\n"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-22
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

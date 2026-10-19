@@ -1,0 +1,35 @@
+id: 09-multi-doc
+title: Deployment in a multi-document bundle
+pattern: A release bundle stores several Kubernetes objects in one YAML stream.
+dimensions:
+- memory-location
+sources:
+- https://helm.sh/docs/v3/chart_template_guide/yaml_techniques/
+- https://github.com/argoproj/argocd-example-apps
+prevalence:
+  level: common
+  evidence: The YAML guide documents streams; Argo example applications include bundled manifests. These
+    labels are qualitative, not measured adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/09-multi-doc/apps/checkout/release.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+render_check:
+  command: cat catalog/09-multi-doc/apps/checkout/release.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment multi-doc in cat-09
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/09-multi-doc/apps/checkout/release.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  document: 1

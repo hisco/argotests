@@ -1,0 +1,58 @@
+id: 36-source-app
+title: Namespaced application source override
+pattern: A namespaced Application receives Helm parameters from its namespace-prefixed source file.
+dimensions:
+- render-options
+- application-creation
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/parameters/
+- https://argocd-image-updater.readthedocs.io/en/stable/basics/update-methods/
+prevalence:
+  level: occasional
+  evidence: Argo CD documents the namespace-prefixed application source-file form. Argo CD Image Updater
+    uses source files for Git write-back and documents namespace-prefixed filenames. The memory override
+    uses the same Argo CD source-file mechanism; no ImageUpdater controller is needed for this fixture.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/36-source-app/apps/checkout/.argocd-source-team-checkout_source-app.yaml at helm.parameters[0].value
+expected: wrong
+expected_edit: null
+expected_reason: null
+notes:
+- Prediction assumes repository access, a connected Git identity, a known Argo CD version, and Argo CD
+  configured to manage Applications in team-checkout. Both the chart defaults and the namespaced source-file
+  parameter initially set 64Mi.
+- The render command applies the source-file Helm parameter, as Argo CD would.
+- Radar checks .argocd-source-source-app.yaml, not .argocd-source-team-checkout_source-app.yaml. It offers
+  to edit resources.limits.memory in apps/checkout/values.yaml. Argo CD keeps applying 64Mi from the namespaced
+  source file, so that pull request has no effect.
+- Radar and Argo CD both render 64Mi before the edit. The changed-after-sync guard and baseline parity
+  check therefore pass. Radar only rerenders its own incomplete inputs after the edit.
+- If the chart default differed from live in an already Synced Application, service.go:853 would refuse
+  with changed-after-sync. This fixture tests the ordinary case where an explicit environment override
+  initially agrees with the default.
+render_check:
+  command: helm template source-app catalog/36-source-app/apps/checkout --namespace cat-36 --set resources.limits.memory=64Mi
+  tool: Helm 4.3.0
+  result: passed
+  deployment: source-app
+  namespace: cat-36
+  memory_request: 16Mi
+  memory_limit: 64Mi
+  baseline_without_source_override: 64Mi
+predicted_wrong_edit:
+  file: catalog/36-source-app/apps/checkout/values.yaml
+  key: resources.limits.memory
+  example_requested_value: 128Mi
+redteam_check:
+  command: helm template source-app catalog/36-source-app/apps/checkout --namespace cat-36 --values catalog/36-source-app/checks/proposed-values.yaml
+    --set resources.limits.memory=64Mi
+  result: passed
+  radar_equivalent_command: helm template source-app catalog/36-source-app/apps/checkout --namespace cat-36
+    --values catalog/36-source-app/checks/proposed-values.yaml
+  radar_predicted_memory: 128Mi
+  requested_memory: 128Mi
+  actual_memory: 64Mi
+  detail: Both baselines are 64Mi. After the proposed values change, Radar predicts 128Mi but Argo CD
+    still renders 64Mi because the source-file parameter wins.
+  proposed_values: catalog/36-source-app/checks/proposed-values.yaml

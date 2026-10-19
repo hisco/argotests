@@ -1,0 +1,36 @@
+id: 03-env-repo
+title: One production configuration repository
+pattern: Production configuration is isolated in an environment repository.
+dimensions:
+- repo-layout
+sources:
+- https://fluxcd.io/flux/guides/repository-structure/
+- https://octopus.com/blog/how-to-model-your-gitops-environments
+prevalence:
+  level: occasional
+  evidence: Flux documents repo per environment; the guide describes production access isolation. These
+    labels are qualitative, not measured adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/03-env-repo/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+- This is the production repository content, namespaced under catalog. The public catalog repository hosts
+  all examples; separate repository permissions are not reproduced.
+render_check:
+  command: cat catalog/03-env-repo/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment env-repo in cat-03
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/03-env-repo/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

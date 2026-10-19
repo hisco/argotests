@@ -1,0 +1,37 @@
+id: 38-chart-values-ref
+title: Helm repository chart and Git values
+pattern: An Application combines a pinned remote chart with a Git values ref.
+dimensions:
+- several-sources
+- source-type
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/
+- https://octopus.com/blog/helm-values-argocd
+- https://raw.githubusercontent.com/stefanprodan/podinfo/6.7.1/charts/podinfo/templates/deployment.yaml
+- https://docs.akuity.io/tutorials/cluster-addons-with-applicationsets/
+prevalence:
+  level: common
+  evidence: The external chart plus Git values pattern is a central multiple-source example. Akuity publishes
+    a working chart-repository plus Git values-ref tutorial. Together with the Kostis guide, this supports
+    the qualitative common label.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/38-chart-values-ref/envs/prod/values.yaml at resources.limits.memory
+expected: supported
+expected_edit:
+  file: catalog/38-chart-values-ref/envs/prod/values.yaml
+  key: resources.limits.memory
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+render_check:
+  command: helm template chart-values-ref podinfo --repo https://stefanprodan.github.io/podinfo --version
+    6.7.1 --namespace cat-38 --values catalog/38-chart-values-ref/envs/prod/values.yaml
+  tool: Helm 4.3.0
+  result: passed
+  deployment: chart-values-ref
+  namespace: cat-38
+  memory_request: 16Mi
+  memory_limit: 64Mi
+  namespace_assignment: Argo CD destination namespace

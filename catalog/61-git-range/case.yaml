@@ -1,0 +1,46 @@
+id: 61-git-range
+title: Git semver range and app tag prefix
+pattern: An app in a monorepo tracks release tags selected by a semver range and app-specific prefix.
+dimensions:
+- revision
+- repo-layout
+- render-overrides
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
+- https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/crds/application-crd.yaml
+prevalence:
+  level: occasional
+  evidence: Argo CD documents Git semver tracking and app-prefixed monorepo tags. This proves a supported
+    Argo pattern, not an adoption rate. TagPrefix requires an Argo CD version whose CRD contains the field.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/61-git-range/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: unsure
+notes:
+- Baseline prediction assumes a readable synced live Application and Deployment, connected writable GitHub
+  identity, and no external memory controller. Requested change is 64Mi to 128Mi.
+- 'Setup prerequisite: publish the fixture under a matching checkout/1.x release tag. No tags are created
+  here. There are no matching prefixed tags in the observed upstream refs.'
+- Radar does not carry tagPrefix in Owner, and its GitHub revision resolver tries the literal range as
+  a branch, then as a commit ref. It does not enumerate and compare semver tags. The likely result is
+  a planning error before source rendering, not a PR or a documented refusal reason code.
+- 'The exact provider error and resulting UI suffix were not verified. The UI prefix is: Radar couldn''t
+  work out where this change goes. A literal branch or tag named 1.* would also change resolution; none
+  is claimed here.'
+- This case is unsure about the observed UI error, not evidence of a wrong pull request. The underlying
+  fixture renders 64Mi locally.
+render_check:
+  command: cat catalog/61-git-range/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment git-range in cat-61
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload YAML. No ApplicationSet controller or remote Argo CD sync was run.
+locator_check:
+  method: service-code-trace
+  note: Git range resolution happens before the locator. The provider error was not verified.

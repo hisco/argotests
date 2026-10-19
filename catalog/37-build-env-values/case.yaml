@@ -1,0 +1,32 @@
+id: 37-build-env-values
+title: Build environment value path
+pattern: An Application selects a values file using ARGOCD_APP_NAME.
+dimensions:
+- environment
+- render-options
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/build-environment/
+- https://argo-cd.readthedocs.io/en/stable/user-guide/helm/
+prevalence:
+  level: occasional
+  evidence: Argo CD documents build-variable expansion in Helm value file paths.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/37-build-env-values/apps/checkout/envs/build-env-values.yaml at resources.limits.memory
+expected: supported
+expected_edit:
+  file: catalog/37-build-env-values/apps/checkout/envs/build-env-values.yaml
+  key: resources.limits.memory
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+render_check:
+  command: helm template build-env-values catalog/37-build-env-values/apps/checkout --namespace cat-37
+    --values catalog/37-build-env-values/apps/checkout/envs/build-env-values.yaml
+  tool: Helm 4.3.0
+  result: passed
+  deployment: build-env-values
+  namespace: cat-37
+  memory_request: 16Mi
+  memory_limit: 64Mi

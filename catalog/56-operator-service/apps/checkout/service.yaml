@@ -1,0 +1,24 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: operator-service
+  namespace: cat-56
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: '1'
+        autoscaling.knative.dev/max-scale: '1'
+    spec:
+      containers:
+      - name: podinfo
+        image: ghcr.io/stefanprodan/podinfo:6.7.1
+        command:
+        - ./podinfo
+        ports:
+        - containerPort: 9898
+        resources:
+          requests:
+            memory: 16Mi
+          limits:
+            memory: 64Mi

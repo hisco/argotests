@@ -1,0 +1,21 @@
+# Derived sample output of this ApplicationSet. Do not install separately.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cat-16-set-merge
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/16-set-merge/envs/prod/apps/checkout
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-16
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

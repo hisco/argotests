@@ -1,0 +1,37 @@
+id: 51-helm-in-kustomize
+title: Vendored Helm chart in Kustomize
+pattern: Kustomize inflates a vendored Helm chart and applies normal transformers.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://github.com/kubernetes-sigs/kustomize/blob/master/examples/chart.md
+- https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/51-helm-in-kustomize/apps/checkout/charts/checkout/values.yaml:
+  resources.limits.memory'
+expected: not-supported
+notes:
+- 'Argo CD needs kustomize.buildOptions: --enable-helm in argocd-cm. The chart is
+  vendored, so this render does not need a chart download. Radar still classifies
+  every helmCharts build as remote-base.'
+- Use Helm 3.19.0 as helm3 on PATH for this check. Kustomize 5.6.0 uses helm version
+  -c, which Helm 4.3.0 rejects. This host-tool mismatch does not make the source invalid
+  in Argo CD with compatible tooling.
+render_check:
+  command: kustomize build --enable-helm --helm-command helm3 catalog/51-helm-in-kustomize/apps/checkout
+  result: 'Passed: exactly one Deployment named helm-in-kustomize in cat-51; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+  - helm 3.19.0
+expected_reason:
+  code: remote-base
+  message: the build pulls helmCharts in catalog/51-helm-in-kustomize/apps/checkout/kustomization.yaml,
+    which Radar doesn't fetch
+  ui_message: 'Radar can''t edit this source: it comes from a remote base (the build
+    pulls helmCharts in catalog/51-helm-in-kustomize/apps/checkout/kustomization.yaml,
+    which Radar doesn''t fetch).'

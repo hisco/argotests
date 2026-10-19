@@ -1,0 +1,43 @@
+id: 14-set-clusters
+title: ApplicationSet cluster selection
+pattern: An ApplicationSet selects registered clusters by labels.
+dimensions:
+- application-creation
+- environment
+sources:
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-Cluster/
+- https://github.com/argoproj/argocd-example-apps
+prevalence:
+  level: common
+  evidence: Official Cluster generator and example app coverage. These labels are qualitative, not measured
+    adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/14-set-clusters/envs/prod/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+- 'Setup prerequisite: exactly one registered cluster Secret must have catalog.argotests.io/case=14 and
+  point to the intended cluster. No Secret or credential is stored here. The derived sample assumes the
+  local cluster server.'
+- Support assumes Radar reads the live generated Application and the complete live ApplicationSet membership.
+  Without that, the unresolved cluster generator becomes an opaque possible reader; the PR can require
+  scope confirmation.
+- generated-application.yaml is derived sample output for inspection, not another Application to install.
+  The render check validates its workload source; no ApplicationSet controller was run.
+render_check:
+  command: cat catalog/14-set-clusters/envs/prod/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment set-clusters in cat-14
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/14-set-clusters/envs/prod/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

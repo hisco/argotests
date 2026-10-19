@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cat-19-commit-pin
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: 1aae77ad67138686544a33f739fa7b6edca2120a
+    path: catalog/19-commit-pin/apps/checkout
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-19
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

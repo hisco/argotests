@@ -1,0 +1,35 @@
+id: 20-git-sources
+title: Merged Git manifest sources
+pattern: One Application combines workload and shared configuration directories from several Git sources.
+dimensions:
+- multiple-sources
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/multiple_sources/
+prevalence:
+  level: occasional
+  evidence: Argo CD documents combining source output and cautions against excessive source counts. These
+    labels are qualitative, not measured adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/20-git-sources/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: not-supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+render_check:
+  command: python3 catalog/20-git-sources/render.py
+  result: passed
+  assertions:
+  - Exactly one Deployment git-sources in cat-20
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_reason:
+  code: generated-source
+  detail: the Application renders several sources, which Radar can't combine yet
+  message: 'Radar can''t edit this source: the Application renders several sources, which Radar can''t
+    combine yet.'

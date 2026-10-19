@@ -1,0 +1,2 @@
+memoryLimit: 64Mi
+resourcesTemplate: "requests:\n  memory: 16Mi\nlimits:\n  memory: {{ .Values.memoryLimit }}\n"

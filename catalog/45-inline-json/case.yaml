@@ -1,0 +1,34 @@
+id: 45-inline-json
+title: Inline JSON6902 patch
+pattern: A JSON6902 operation is embedded in kustomization.yaml.
+dimensions:
+- source-type
+- memory-location
+- environment-differences
+- repo-layout
+sources:
+- https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patches/
+- https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/45-inline-json/apps/checkout/envs/prod/kustomization.yaml:
+  patches[0].patch JSON6902 operation value'
+expected: not-supported
+notes:
+- 'The locator searches inline text for a memory: line. This inline JSON operation
+  has path: and value: lines instead. The base scalar is overridden, so its sentinel
+  does not move the render.'
+render_check:
+  command: kustomize build catalog/45-inline-json/apps/checkout/envs/prod
+  result: 'Passed: exactly one Deployment named inline-json in cat-45; podinfo image
+    6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_reason:
+  code: editor-refused
+  message: Git sets the memory limit, but no single file edit Radar can make changes
+    it
+  ui_message: 'Radar can''t change this from here: it''s in a multi-line block Radar
+    won''t rewrite safely.'

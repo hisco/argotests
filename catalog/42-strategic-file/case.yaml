@@ -1,0 +1,33 @@
+id: 42-strategic-file
+title: Strategic merge patch file
+pattern: An environment stores resource changes in a strategic merge patch file.
+dimensions:
+- source-type
+- memory-location
+- environment-differences
+- repo-layout
+sources:
+- https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+- https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patchesstrategicmerge/
+prevalence:
+  level: common
+  evidence: The Kubernetes Kustomize task demonstrates strategic patches. The upstream
+    reference documents the legacy patchesStrategicMerge spelling.
+memory_set_by: 'catalog/42-strategic-file/apps/checkout/envs/prod/resources.yaml:
+  Deployment strategic-file container podinfo resources.limits.memory'
+expected: supported
+notes:
+- The legacy field remains accepted by Kustomize 5.6.0 and emits a deprecation warning.
+render_check:
+  command: kustomize build catalog/42-strategic-file/apps/checkout/envs/prod
+  result: 'Passed: exactly one Deployment named strategic-file in cat-42; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  warnings: '# Warning: ''patchesStrategicMerge'' is deprecated. Please use ''patches''
+    instead. Run ''kustomize edit fix'' to update your Kustomization automatically.
+
+    '
+  tools:
+  - kustomize 5.6.0
+expected_edit:
+  file: catalog/42-strategic-file/apps/checkout/envs/prod/resources.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

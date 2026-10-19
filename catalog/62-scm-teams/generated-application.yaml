@@ -1,0 +1,21 @@
+# Derived sample for inspection. Do not install separately.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cat-62-argo-cd
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/62-scm-teams/apps/argo-cd
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-62
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

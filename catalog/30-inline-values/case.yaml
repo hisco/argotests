@@ -1,0 +1,34 @@
+id: 30-inline-values
+title: Inline YAML values
+pattern: An Application supplies the memory limit in its helm.values YAML string.
+dimensions:
+- memory-location
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/helm/
+prevalence:
+  level: common
+  evidence: Inline YAML values are a first-class Argo CD Helm option.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/argocd/30-inline-values.yaml in spec.source.helm
+expected: not-supported
+expected_edit: null
+expected_reason:
+  code: app-spec-values
+  message: 'Radar can''t change this from here: the value is in the Application''s own spec, which Radar
+    doesn''t change yet.'
+  detail: the Application sets resources.limits.memory in its own Helm values
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+- The render command uses an equivalent --set value for the one inline memory override. The Application
+  remains the source of truth.
+render_check:
+  command: helm template inline-values catalog/30-inline-values/apps/checkout --namespace cat-30 --set
+    resources.limits.memory=64Mi
+  tool: Helm 4.3.0
+  result: passed
+  deployment: inline-values
+  namespace: cat-30
+  memory_request: 16Mi
+  memory_limit: 64Mi

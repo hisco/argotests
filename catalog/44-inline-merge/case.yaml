@@ -1,0 +1,31 @@
+id: 44-inline-merge
+title: Inline strategic merge patch
+pattern: A small environment patch is embedded in kustomization.yaml.
+dimensions:
+- source-type
+- memory-location
+- environment-differences
+- repo-layout
+sources:
+- https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patches/
+- https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/44-inline-merge/apps/checkout/envs/prod/kustomization.yaml:
+  patches[0].patch multiline strategic merge patch'
+expected: not-supported
+notes: []
+render_check:
+  command: kustomize build catalog/44-inline-merge/apps/checkout/envs/prod
+  result: 'Passed: exactly one Deployment named inline-merge in cat-44; podinfo image
+    6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_reason:
+  code: editor-refused
+  message: 'Radar found it in catalog/44-inline-merge/apps/checkout/envs/prod/kustomization.yaml
+    but can''t change it safely: it is set inside an inline patch in kustomization.yaml'
+  ui_message: 'Radar can''t change this from here: it''s in a multi-line block Radar
+    won''t rewrite safely.'

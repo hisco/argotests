@@ -1,0 +1,29 @@
+id: 57-application-patch
+title: Application inline Kustomize patch
+pattern: An Application supplies an inline Kustomize patch that overrides a repository
+  value.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/argocd/57-application-patch.yaml: spec.source.kustomize.patches[0].patch
+  memory scalar'
+expected: not-supported
+notes: []
+render_check:
+  command: python3 catalog/57-application-patch/render.py
+  result: 'Passed: exactly one Deployment named application-patch in cat-57; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_reason:
+  code: app-spec-values
+  message: the kustomize options in the Application or its .argocd-source file set
+    the memory limit, so change it there
+  ui_message: 'Radar can''t change this from here: the value is in the Application''s
+    own spec, which Radar doesn''t change yet.'

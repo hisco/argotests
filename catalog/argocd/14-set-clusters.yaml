@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cat-14-set-clusters
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+  - missingkey=error
+  generators:
+  - clusters:
+      selector:
+        matchLabels:
+          catalog.argotests.io/case: '14'
+  template:
+    metadata:
+      name: cat-14-set-clusters
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: main
+        path: catalog/14-set-clusters/envs/prod/apps/checkout
+      destination:
+        server: '{{.server}}'
+        namespace: cat-14
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

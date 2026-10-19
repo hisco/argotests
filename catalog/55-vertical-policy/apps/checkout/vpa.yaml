@@ -1,0 +1,22 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vertical-policy
+  namespace: cat-55
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: vertical-policy
+  updatePolicy:
+    updateMode: Recreate
+  resourcePolicy:
+    containerPolicies:
+    - containerName: podinfo
+      controlledResources:
+      - memory
+      controlledValues: RequestsAndLimits
+      minAllowed:
+        memory: 16Mi
+      maxAllowed:
+        memory: 128Mi

@@ -1,0 +1,39 @@
+id: 50-remote-base
+title: Pinned remote Kustomize base
+pattern: An environment consumes a shared Kustomize base from a pinned external Git
+  revision.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://github.com/kubernetes-sigs/kustomize/blob/master/examples/remoteBuild.md
+- https://github.com/stefanprodan/podinfo/tree/6.7.1/kustomize
+prevalence:
+  level: occasional
+  evidence: This is a documented upstream feature with worked examples. No adoption
+    percentage is claimed.
+memory_set_by: 'catalog/50-remote-base/apps/checkout/resources.yaml: resources replacement
+  on the pinned upstream Deployment'
+expected: not-supported
+notes:
+- The pinned remote base also contains Service and HPA resources. This overlay sets
+  HPA minReplicas and maxReplicas to one. It produces one Deployment named remote-base.
+  Pinning the base does not pin the Application itself, which still tracks main.
+render_check:
+  command: kustomize build catalog/50-remote-base/apps/checkout
+  result: 'Passed: exactly one Deployment named remote-base in cat-50; podinfo image
+    6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_reason:
+  code: remote-base
+  message: the build pulls https://github.com/stefanprodan/podinfo//kustomize?ref=6.7.1,
+    which Radar doesn't fetch
+  ui_message: 'Radar can''t edit this source: it comes from a remote base (the build
+    pulls https://github.com/stefanprodan/podinfo//kustomize?ref=6.7.1, which Radar
+    doesn''t fetch).'
+target:
+  kind: Deployment
+  name: remote-base
+  namespace: cat-50
+  container: podinfod

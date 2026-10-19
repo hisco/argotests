@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: checkout-resources
+  namespace: cat-48
+data:
+  memory: 64Mi

@@ -1,0 +1,13 @@
+- op: replace
+  path: /metadata/name
+  value: remote-base
+- op: replace
+  path: /spec/replicas
+  value: 1
+- op: replace
+  path: /spec/template/spec/containers/0/resources
+  value:
+    requests:
+      memory: 16Mi
+    limits:
+      memory: 64Mi

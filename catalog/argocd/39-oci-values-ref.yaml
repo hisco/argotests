@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oci-values-ref
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-39
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+  sources:
+  - repoURL: ghcr.io/stefanprodan/charts
+    chart: podinfo
+    targetRevision: 6.7.1
+    helm:
+      valueFiles:
+      - $values/catalog/39-oci-values-ref/envs/prod/values.yaml
+  - repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    ref: values

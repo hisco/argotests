@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cat-20-git-sources
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-20
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+  sources:
+  - repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/20-git-sources/apps/checkout
+  - repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/20-git-sources/shared

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fullnameOverride | default .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.fullnameOverride | default .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fullnameOverride | default .Release.Name }}
+    spec:
+      containers:
+        {{- range .Values.containers }}
+        - name: {{ .name }}
+          image: {{ .image }}
+          command: [./podinfo]
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+        {{- end }}

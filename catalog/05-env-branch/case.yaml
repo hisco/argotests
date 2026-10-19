@@ -1,0 +1,38 @@
+id: 05-env-branch
+title: Production branch promotion
+pattern: Each environment tracks a separate Git branch.
+dimensions:
+- repo-layout
+- revision
+sources:
+- https://octopus.com/blog/stop-using-branches-deploying-different-gitops-environments
+- https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
+prevalence:
+  level: occasional
+  evidence: The guide addresses this established practice and recommends folders instead. These labels
+    are qualitative, not measured adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/05-env-branch/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+- 'Setup prerequisite: publish this catalog tree on a production branch. This task creates no refs. Before
+  that, Argo CD cannot deploy this Application and Radar revision resolution returns an error before the
+  locator runs.'
+render_check:
+  command: cat catalog/05-env-branch/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment env-branch in cat-05
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/05-env-branch/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

@@ -1,0 +1,30 @@
+id: 28-resources-tpl
+title: Resources through tpl
+pattern: A chart evaluates a templated resources string that refers to a separate memoryLimit value.
+dimensions:
+- memory-location
+sources:
+- https://helm.sh/docs/howto/charts_tips_and_tricks/
+prevalence:
+  level: occasional
+  evidence: Helm documents tpl for evaluating values as templates.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/28-resources-tpl/apps/checkout/values.yaml at memoryLimit
+expected: supported
+expected_edit:
+  file: catalog/28-resources-tpl/apps/checkout/values.yaml
+  key: memoryLimit
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+- The resources string remains a template. Radar can change the separate scalar it refers to.
+render_check:
+  command: helm template resources-tpl catalog/28-resources-tpl/apps/checkout --namespace cat-28
+  tool: Helm 4.3.0
+  result: passed
+  deployment: resources-tpl
+  namespace: cat-28
+  memory_request: 16Mi
+  memory_limit: 64Mi

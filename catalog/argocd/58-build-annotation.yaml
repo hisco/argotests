@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: build-annotation
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/58-build-annotation/apps/checkout
+    kustomize:
+      commonAnnotationsEnvsubst: true
+      commonAnnotations:
+        app.example.com/source-application: ${ARGOCD_APP_NAME}
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-58
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

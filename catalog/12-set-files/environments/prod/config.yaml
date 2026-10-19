@@ -1,0 +1,3 @@
+environment: prod
+appPath: catalog/12-set-files/envs/prod/apps/checkout
+namespace: cat-12

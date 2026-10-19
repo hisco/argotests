@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: cat-16-set-merge
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+  - missingkey=error
+  generators:
+  - merge:
+      mergeKeys:
+      - environment
+      generators:
+      - list:
+          elements:
+          - environment: prod
+            appPath: catalog/16-set-merge/envs/prod/apps/checkout
+            namespace: checkout
+      - list:
+          elements:
+          - environment: prod
+            namespace: cat-16
+  template:
+    metadata:
+      name: cat-16-set-merge
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/hisco/argotests.git
+        targetRevision: main
+        path: '{{.appPath}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{.namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true

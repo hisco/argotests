@@ -1,0 +1,34 @@
+id: 49-generated-memory
+title: Generated ConfigMap replacement
+pattern: A replacement copies a generated configuration value into the Deployment.
+dimensions:
+- source-type
+- memory-location
+sources:
+- https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/replacements/
+- https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/configmapgenerator/
+- https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/
+prevalence:
+  level: occasional
+  evidence: Kubernetes documents replacements and configuration generators. Copying
+    a generated resource setting is an occasional composition of these features; no
+    adoption count was found.
+memory_set_by: 'catalog/49-generated-memory/apps/checkout/resources.env: memory=64Mi,
+  read by configMapGenerator then replacements'
+expected: not-supported
+notes:
+- The candidate list includes the Deployment origin, Kustomization files and patch
+  files. It does not include the replacement source ConfigMap or generator input.
+  Changing the Deployment scalar is overwritten by the replacement.
+render_check:
+  command: kustomize build catalog/49-generated-memory/apps/checkout
+  result: 'Passed: exactly one Deployment named generated-memory in cat-49; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_reason:
+  code: editor-refused
+  message: Git sets the memory limit, but no single file edit Radar can make changes
+    it
+  ui_message: 'Radar can''t change this from here: it''s in a multi-line block Radar
+    won''t rewrite safely.'

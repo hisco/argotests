@@ -1,0 +1,32 @@
+id: 54-namespace-default
+title: LimitRange supplies the Pod default
+pattern: A namespace LimitRange supplies memory limits when the Deployment template
+  omits them.
+dimensions:
+- source-type
+- memory-location
+- admission-defaults
+sources:
+- https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/
+prevalence:
+  level: common
+  evidence: Kubernetes has a dedicated administrator task for namespace memory defaults.
+memory_set_by: 'catalog/54-namespace-default/apps/checkout/defaults.yaml: spec.limits[type=Container].default.memory.
+  Admission applies it to Pods, not the Deployment.'
+expected: supported
+notes:
+- 'Intentional render exception: the Deployment template has no limit. A normal offline
+  build must not invent admission output. The LimitRange default is 64Mi. Radar adds
+  an explicit per-container limit to the Deployment, which takes precedence over the
+  namespace default. The prediction assumes the user asks for a new explicit limit
+  and the Application directly tracks this Deployment.'
+render_check:
+  command: kustomize build catalog/54-namespace-default/apps/checkout
+  result: 'Passed: one Deployment intentionally has no template limit; LimitRange
+    default.memory is 64Mi. Admission defaults apply to new Pods only. No cluster
+    admission was run.'
+  tools:
+  - kustomize 5.6.0
+expected_edit:
+  file: catalog/54-namespace-default/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

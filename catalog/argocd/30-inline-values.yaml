@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: inline-values
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/30-inline-values/apps/checkout
+    helm:
+      values: "resources:\n  limits:\n    memory: 64Mi\n  requests:\n    memory: 16Mi\n"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-30
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

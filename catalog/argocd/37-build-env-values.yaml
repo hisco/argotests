@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: build-env-values
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/hisco/argotests.git
+    targetRevision: main
+    path: catalog/37-build-env-values/apps/checkout
+    helm:
+      valueFiles:
+      - envs/$ARGOCD_APP_NAME.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cat-37
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

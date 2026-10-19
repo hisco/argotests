@@ -1,0 +1,28 @@
+id: 47-resource-component
+title: Reusable resource component
+pattern: An overlay opts into a reusable component that applies resource limits.
+dimensions:
+- source-type
+- memory-location
+- environment-differences
+- repo-layout
+sources:
+- https://github.com/kubernetes-sigs/kustomize/blob/master/examples/components.md
+- https://github.com/redhat-cop/gitops-standards-repo-template
+prevalence:
+  level: occasional
+  evidence: 'Kustomize ships a components example. The Red Hat Community of Practice
+    multi-cluster template composes cluster groups with kind: Component.'
+memory_set_by: 'catalog/47-resource-component/apps/checkout/components/small/resources.yaml:
+  container podinfo resources.limits.memory'
+expected: supported
+notes: []
+render_check:
+  command: kustomize build catalog/47-resource-component/apps/checkout/envs/prod
+  result: 'Passed: exactly one Deployment named resource-component in cat-47; podinfo
+    image 6.7.1, one replica, memory request 16Mi and memory limit 64Mi.'
+  tools:
+  - kustomize 5.6.0
+expected_edit:
+  file: catalog/47-resource-component/apps/checkout/components/small/resources.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

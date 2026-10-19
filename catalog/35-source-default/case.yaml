@@ -1,0 +1,34 @@
+id: 35-source-default
+title: Repository source override
+pattern: A chart directory supplies Helm parameters through .argocd-source.yaml.
+dimensions:
+- render-options
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/parameters/
+prevalence:
+  level: occasional
+  evidence: Argo CD documents source files for parameter overrides.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/35-source-default/apps/checkout/.argocd-source.yaml at helm.parameters[0].value
+expected: not-supported
+expected_edit: null
+expected_reason:
+  code: argocd-source-override
+  message: 'Radar can''t change this from here: catalog/35-source-default/apps/checkout/.argocd-source.yaml
+    overrides this Application''s source parameters, which Radar doesn''t apply yet.'
+  detail: catalog/35-source-default/apps/checkout/.argocd-source.yaml overrides this Application's source
+    parameters, which Radar doesn't apply yet
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+- The render command applies the source-file Helm parameter, as Argo CD would.
+render_check:
+  command: helm template source-default catalog/35-source-default/apps/checkout --namespace cat-35 --set
+    resources.limits.memory=64Mi
+  tool: Helm 4.3.0
+  result: passed
+  deployment: source-default
+  namespace: cat-35
+  memory_request: 16Mi
+  memory_limit: 64Mi

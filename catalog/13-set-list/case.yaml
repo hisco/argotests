@@ -1,0 +1,37 @@
+id: 13-set-list
+title: ApplicationSet explicit environment list
+pattern: An ApplicationSet lists the environments and source paths explicitly.
+dimensions:
+- application-creation
+- environment
+sources:
+- https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators-List/
+- https://github.com/argoproj/argocd-example-apps
+prevalence:
+  level: common
+  evidence: Official List generator and example app coverage. These labels are qualitative, not measured
+    adoption shares.
+memory_set_by:
+  method: literal manifest scalar
+  file: catalog/13-set-list/envs/prod/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory
+  value: 64Mi
+expected: supported
+notes:
+- Predicted for a live synced Deployment, a connected GitHub account with write access, readable repository,
+  and no external controller changing memory. The requested edit is 64Mi to 128Mi.
+- generated-application.yaml is derived sample output for inspection, not another Application to install.
+  The render check validates its workload source; no ApplicationSet controller was run.
+render_check:
+  command: cat catalog/13-set-list/envs/prod/apps/checkout/deployment.yaml
+  result: passed
+  assertions:
+  - Exactly one Deployment set-list in cat-13
+  - replicas=1
+  - image=ghcr.io/stefanprodan/podinfo:6.7.1
+  - requests.memory=16Mi
+  - limits.memory=64Mi
+  scope: Local workload rendering and YAML parsing. No remote ref or live Argo CD sync was verified.
+expected_edit:
+  file: catalog/13-set-list/envs/prod/apps/checkout/deployment.yaml
+  key: spec.template.spec.containers[name=podinfo].resources.limits.memory

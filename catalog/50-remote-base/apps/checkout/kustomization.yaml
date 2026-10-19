@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- https://github.com/stefanprodan/podinfo//kustomize?ref=6.7.1
+namespace: cat-50
+patches:
+- target:
+    kind: Deployment
+    name: podinfo
+  path: resources.yaml
+- path: hpa.yaml

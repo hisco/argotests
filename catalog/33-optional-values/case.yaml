@@ -1,0 +1,36 @@
+id: 33-optional-values
+title: Optional environment values
+pattern: An Application ignores a missing optional cluster values file.
+dimensions:
+- environment
+- render-options
+sources:
+- https://argo-cd.readthedocs.io/en/stable/user-guide/helm/
+- https://docs.akuity.io/tutorials/cluster-addons-with-applicationsets/
+prevalence:
+  level: occasional
+  evidence: Argo CD documents this default/override pattern for ApplicationSets. Akuity also publishes
+    an add-ons workshop using ignoreMissingValueFiles with per-cluster values. This establishes public
+    use, not an adoption rate.
+  caveat: Qualitative classification. Documentation and public examples are evidence, not a measured adoption
+    rate.
+memory_set_by: catalog/33-optional-values/envs/prod/values.yaml at resources.limits.memory
+expected: supported
+expected_edit:
+  file: catalog/33-optional-values/envs/prod/values.yaml
+  key: resources.limits.memory
+expected_reason: null
+notes:
+- Prediction assumes Radar can read the repository, has a connected Git identity, knows the Argo CD version,
+  and matches the live render. No live cluster was changed.
+- The optional cluster file is absent. The production file already sets memory, so Radar edits it rather
+  than creating an override.
+render_check:
+  command: helm template optional-values catalog/33-optional-values/apps/checkout --namespace cat-33 --values
+    catalog/33-optional-values/envs/prod/values.yaml
+  tool: Helm 4.3.0
+  result: passed
+  deployment: optional-values
+  namespace: cat-33
+  memory_request: 16Mi
+  memory_limit: 64Mi
