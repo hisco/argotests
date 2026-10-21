@@ -1,0 +1,1 @@
+Fixtures for the non-happy flow screenshots: a Helm repository (helmrepo/, built from src/) whose chart hardcodes replicas and takes the image from its own default values, and a chart in Git (collateral/) where one value sets both the image tag and the version label.

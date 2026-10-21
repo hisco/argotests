@@ -1,0 +1,4 @@
+apiVersion: v2
+name: nh-repochart
+version: 0.1.0
+description: Fixture chart served from a Helm repository. Replicas are hardcoded in the template; the image comes from the chart's own default values.

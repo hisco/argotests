@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  nh-repochart:
+  - apiVersion: v2
+    created: "2026-10-21T23:53:00.991334+03:00"
+    description: Fixture chart served from a Helm repository. Replicas are hardcoded
+      in the template; the image comes from the chart's own default values.
+    digest: 6e0f7465f7c4cbcba18d62ecbee101fbd3d7281e1acc0e480cec3dfa16f3b2fa
+    name: nh-repochart
+    urls:
+    - https://raw.githubusercontent.com/hisco/argotests/main/proofs/nh/helmrepo/nh-repochart-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-10-21T23:53:00.990944+03:00"
