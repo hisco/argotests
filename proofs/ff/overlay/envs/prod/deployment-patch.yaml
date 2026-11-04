@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ff-overlay
+spec:
+  template:
+    spec:
+      containers:
+      - name: podinfo
+        env:
+        - name: GREETING_MODE
+          value: green
+        readinessProbe:
+          timeoutSeconds: 4
+        resources:
+          requests:
+            cpu: 100m

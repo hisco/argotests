@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ff-overlay
+spec:
+  type: ClusterIP
+  selector:
+    app: ff-overlay
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9898

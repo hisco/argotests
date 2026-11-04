@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: {{ .Release.Name }}
+  annotations:
+    team.example.com/owner: {{ .Values.owner }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: podinfo
+          image: ghcr.io/stefanprodan/podinfo:6.7.1
+          command: [./podinfo]
+          args:
+            - --port={{ .Values.port }}
+            - --level={{ .Values.logLevel }}
+          env:
+            - name: PODINFO_UI_MESSAGE
+              value: {{ .Values.message | quote }}
+            - name: GREETING_MODE
+              value: {{ .Values.color | quote }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.probe.path }}
+              port: {{ .Values.port }}
+            periodSeconds: {{ .Values.probe.periodSeconds }}
+            timeoutSeconds: {{ .Values.probe.timeoutSeconds }}
+          resources:
+            requests:
+              cpu: {{ .Values.cpuRequest }}
+              memory: 16Mi
+            limits:
+              memory: {{ .Values.memoryLimit }}
