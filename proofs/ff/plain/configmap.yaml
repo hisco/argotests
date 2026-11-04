@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: ff-plain-settings
-data:
-  greeting: hello
-  color: blue
-  max-connections: "100"
