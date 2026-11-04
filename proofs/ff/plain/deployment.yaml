@@ -27,7 +27,7 @@ spec:
         - --level=info
         env:
         - name: PODINFO_UI_MESSAGE
-          value: hello from radar
+          value: hello from git
         - name: GREETING_MODE
           value: blue
         - name: POD_NAME
