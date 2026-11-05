@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: sc-strict-reader
+resources:
+- ../app
+# builds only while the container's resources hold exactly these requests
+patches:
+- target: {group: apps, kind: Deployment, name: sc-strict}
+  patch: |-
+    - op: test
+      path: /spec/template/spec/containers/0/resources
+      value: {requests: {cpu: 10m, memory: 32Mi}}

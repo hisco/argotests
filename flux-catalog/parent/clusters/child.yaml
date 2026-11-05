@@ -1,0 +1,23 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: fx-child
+  namespace: flux-system
+spec:
+  interval: 1m
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: fx-main
+  path: ./flux-catalog/parent/app
+  images:
+  - name: ghcr.io/stefanprodan/podinfo
+    newTag: 6.7.0
+  patches:
+  - target:
+      kind: Deployment
+      name: fx-child
+    patch: |
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 72Mi
